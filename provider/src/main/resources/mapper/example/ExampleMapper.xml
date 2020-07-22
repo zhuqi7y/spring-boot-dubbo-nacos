@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.youzi.modules.example.mapper.ExampleMapper">
+
+  <insert id="add" parameterType="com.youzi.modules.example.entity.Example">
+
+  </insert>
+
+  <insert id="addAndGetId" parameterType="com.youzi.modules.example.entity.Example" useGeneratedKeys="true" keyProperty="id">
+
+  </insert>
+
+  <update id="update" parameterType="com.youzi.modules.example.entity.Example">
+
+  </update>
+
+  <update id="delete" parameterType="com.youzi.common.query.DeleteQuery">
+
+  </update>
+
+  <select id="selectById" parameterType="long" resultType="com.youzi.modules.example.vo.ExampleVo">
+
+  </select>
+
+  <select id="selectPage" parameterType="com.youzi.modules.example.query.ExampleQuery" resultType="com.youzi.modules.example.vo.ExampleVo">
+
+  </select>
+
+</mapper>

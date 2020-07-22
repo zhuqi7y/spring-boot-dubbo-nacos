@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <parent>
+    <groupId>com.youzi</groupId>
+    <artifactId>spring-boot-dubbo-nacos-parent</artifactId>
+    <version>1.0.0</version>
+  </parent>
+  <modelVersion>4.0.0</modelVersion>
+  <artifactId>consumer</artifactId>
+  <description>spring-boot-dubbo-nacos-consumer project for Spring Boot</description>
+  <packaging>pom</packaging>
+
+  <modules>
+    <module>consumer-api</module>
+  </modules>
+
+  <dependencies>
+    <dependency>
+      <groupId>com.youzi</groupId>
+      <artifactId>common</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.youzi</groupId>
+      <artifactId>interface</artifactId>
+    </dependency>
+  </dependencies>
+
+</project>

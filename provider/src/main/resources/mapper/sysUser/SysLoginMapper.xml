@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.youzi.modules.sys.mapper.SysLoginMapper">
+
+  <select id="isLoginNameOrPhoneExisted" parameterType="string" resultType="_boolean">
+
+  </select>
+
+  <select id="selectByLoginName" parameterType="string" resultType="com.youzi.modules.sys.entity.SysUser">
+
+  </select>
+
+</mapper>
