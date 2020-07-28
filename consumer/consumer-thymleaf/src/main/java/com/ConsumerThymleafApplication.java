@@ -1,17 +1,16 @@
 package com;
 
 import com.alibaba.nacos.spring.context.annotation.config.NacosPropertySource;
-import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 
-@MapperScan(basePackages = "com.youzi.modules.*.mapper")
 @NacosPropertySource(dataId = "${spring.application.name}", autoRefreshed = true)
-@SpringBootApplication
-public class ProviderApplication /*extends SpringBootServletInitializer*/ {
+@SpringBootApplication(exclude = {DataSourceAutoConfiguration.class})
+public class ConsumerThymleafApplication /*extends SpringBootServletInitializer*/ {
 
     public static void main(String[] args) {
-        SpringApplication.run(ProviderApplication.class, args);
+        SpringApplication.run(ConsumerThymleafApplication.class, args);
     }
 
     /*@Override

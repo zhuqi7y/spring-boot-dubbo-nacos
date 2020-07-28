@@ -3,7 +3,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
   <parent>
     <groupId>com.youzi</groupId>
-    <artifactId>spring-boot-dubbo-nacos-parent</artifactId>
+    <artifactId>consumer</artifactId>
     <version>1.0.0</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
@@ -51,12 +51,10 @@
     <dependency>
       <groupId>org.apache.dubbo</groupId>
       <artifactId>dubbo-spring-boot-starter</artifactId>
-      <exclusions>
-        <exclusion>
-          <groupId>com.alibaba.nacos</groupId>
-          <artifactId>nacos-client</artifactId>
-        </exclusion>
-      </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>com.alibaba.boot</groupId>
+      <artifactId>nacos-config-spring-boot-starter</artifactId>
     </dependency>
     <dependency>
       <groupId>com.alibaba.nacos</groupId>

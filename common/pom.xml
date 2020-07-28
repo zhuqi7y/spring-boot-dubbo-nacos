@@ -3,13 +3,12 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
   <parent>
     <groupId>com.youzi</groupId>
-    <artifactId>spring-boot-dubbo-nacos-parent</artifactId>
+    <artifactId>spring-boot-dubbo-nacos</artifactId>
     <version>1.0.0</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
   <artifactId>common</artifactId>
   <description>spring-boot-dubbo-nacos-common project for Spring Boot</description>
-  <packaging>pom</packaging>
 
   <dependencies>
     <dependency>
@@ -20,9 +19,14 @@
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter-validation</artifactId>
     </dependency>
+
     <dependency>
       <groupId>com.github.pagehelper</groupId>
       <artifactId>pagehelper-spring-boot-starter</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>cn.hutool</groupId>
+      <artifactId>hutool-all</artifactId>
     </dependency>
   </dependencies>
 

@@ -17,7 +17,7 @@ import java.util.List;
  * @author: zhuqi
  * @date: 2020年07月22日 15:55
  */
-@DubboService
+@DubboService(version = "${dubbo.provider.version}", group = "${dubbo.provider.group}")
 public class ExampleServiceImpl implements ExampleService {
 
     @Autowired

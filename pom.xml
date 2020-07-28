@@ -3,7 +3,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.youzi</groupId>
-  <artifactId>spring-boot-dubbo-nacos-parent</artifactId>
+  <artifactId>spring-boot-dubbo-nacos</artifactId>
   <version>1.0.0</version>
   <name>spring-boot-dubbo-nacos</name>
   <description>spring-boot-dubbo-nacos project for Spring Boot</description>
@@ -21,22 +21,34 @@
     <java.version>1.8</java.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    <spring-boot.version>2.3.1.RELEASE</spring-boot.version>
+    <spring-boot.version>2.3.2.RELEASE</spring-boot.version>
     <dubbo.version>2.7.7</dubbo.version>
+    <nacos-config.version>0.2.7</nacos-config.version>
     <nacos-client.version>1.3.1</nacos-client.version>
+    <mysql.version>8.0.21</mysql.version>
     <druid.version>1.1.23</druid.version>
     <mybatis.version>2.1.3</mybatis.version>
-    <pagehelper.version>1.2.13</pagehelper.version>
-    <fastjson.version>1.2.72</fastjson.version>
-    <hutool.version>5.3.9</hutool.version>
+    <pagehelper.version>1.3.0</pagehelper.version>
+    <fastjson.version>1.2.73</fastjson.version>
+    <hutool.version>5.3.10</hutool.version>
   </properties>
 
   <dependencyManagement>
     <dependencies>
+      <!-- Spring Boot -->
       <dependency>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-dependencies</artifactId>
         <version>${spring-boot.version}</version>
+        <type>pom</type>
+        <scope>import</scope>
+      </dependency>
+
+      <!-- Apache Dubbo  -->
+      <dependency>
+        <groupId>org.apache.dubbo</groupId>
+        <artifactId>dubbo-dependencies-bom</artifactId>
+        <version>${dubbo.version}</version>
         <type>pom</type>
         <scope>import</scope>
       </dependency>
@@ -56,12 +68,11 @@
         <groupId>org.apache.dubbo</groupId>
         <artifactId>dubbo-spring-boot-starter</artifactId>
         <version>${dubbo.version}</version>
-        <exclusions>
-          <exclusion>
-            <groupId>com.alibaba.nacos</groupId>
-            <artifactId>nacos-client</artifactId>
-          </exclusion>
-        </exclusions>
+      </dependency>
+      <dependency>
+        <groupId>com.alibaba.boot</groupId>
+        <artifactId>nacos-config-spring-boot-starter</artifactId>
+        <version>${nacos-config.version}</version>
       </dependency>
       <dependency>
         <groupId>com.alibaba.nacos</groupId>
@@ -69,6 +80,11 @@
         <version>${nacos-client.version}</version>
       </dependency>
 
+      <dependency>
+        <groupId>mysql</groupId>
+        <artifactId>mysql-connector-java</artifactId>
+        <version>${mysql.version}</version>
+      </dependency>
       <dependency>
         <groupId>com.alibaba</groupId>
         <artifactId>druid-spring-boot-starter</artifactId>
