@@ -13,7 +13,7 @@
 
   <modules>
     <module>consumer-api</module>
-    <module>consumer-thymleaf</module>
+    <module>consumer-page</module>
   </modules>
 
   <dependencies>

@@ -7,10 +7,10 @@ import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 
 @NacosPropertySource(dataId = "${spring.application.name}", autoRefreshed = true)
 @SpringBootApplication(exclude = {DataSourceAutoConfiguration.class})
-public class ConsumerThymleafApplication /*extends SpringBootServletInitializer*/ {
+public class ConsumerPageApplication /*extends SpringBootServletInitializer*/ {
 
     public static void main(String[] args) {
-        SpringApplication.run(ConsumerThymleafApplication.class, args);
+        SpringApplication.run(ConsumerPageApplication.class, args);
     }
 
     /*@Override

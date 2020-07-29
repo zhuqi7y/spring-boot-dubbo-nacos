@@ -7,8 +7,8 @@
     <version>1.0.0</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
-  <artifactId>consumer-thymleaf</artifactId>
-  <description>spring-boot-dubbo-nacos-consumer-thymleaf project for Spring Boot</description>
+  <artifactId>consumer-page</artifactId>
+  <description>spring-boot-dubbo-nacos-consumer-page project for Spring Boot</description>
   <packaging>jar</packaging>
 
   <dependencies>
