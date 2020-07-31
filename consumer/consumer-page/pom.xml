@@ -9,7 +9,6 @@
   <modelVersion>4.0.0</modelVersion>
   <artifactId>consumer-page</artifactId>
   <description>spring-boot-dubbo-nacos-consumer-page project for Spring Boot</description>
-  <packaging>jar</packaging>
 
   <dependencies>
     <dependency>
@@ -76,6 +75,15 @@
     <dependency>
       <groupId>cn.hutool</groupId>
       <artifactId>hutool-all</artifactId>
+    </dependency>
+
+    <dependency>
+      <groupId>org.webjars</groupId>
+      <artifactId>jquery</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.webjars</groupId>
+      <artifactId>layui</artifactId>
     </dependency>
   </dependencies>
 

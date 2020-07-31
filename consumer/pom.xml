@@ -17,14 +17,7 @@
   </modules>
 
   <dependencies>
-    <dependency>
-      <groupId>com.youzi</groupId>
-      <artifactId>common</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>com.youzi</groupId>
-      <artifactId>interface</artifactId>
-    </dependency>
+
   </dependencies>
 
 </project>
