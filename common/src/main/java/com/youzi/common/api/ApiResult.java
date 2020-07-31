@@ -12,34 +12,84 @@ public class ApiResult<T> {
     private String msg;
     private T body;
 
+    public ApiResult() {}
+
     public ApiResult(int code, String msg, T body) {
         this.code = code;
         this.msg = msg;
         this.body = body;
     }
 
-    public static ApiResult success() {
-        return new ApiResult(ApiCodeEnum.SUCCESS.getCode(), ApiCodeEnum.SUCCESS.getMsg(), null);
+    public ApiResult(IApiCode apiCode) {
+        this.code = apiCode.getCode();
+        this.msg = apiCode.getMsg();
+        this.body = null;
     }
 
-    public static ApiResult success(String msg) {
-        return new ApiResult(ApiCodeEnum.SUCCESS.getCode(), StrUtil.blankToDefault(msg, ApiCodeEnum.SUCCESS.getMsg()), null);
+    public ApiResult(IApiCode apiCode, String msg) {
+        this.code = apiCode.getCode();
+        this.msg = StrUtil.blankToDefault(msg, apiCode.getMsg());
+        this.body = null;
     }
 
-    public static ApiResult successBody(Object body) {
-        return new ApiResult(ApiCodeEnum.SUCCESS.getCode(), ApiCodeEnum.SUCCESS.getMsg(), body);
+    public ApiResult(IApiCode apiCode, T body) {
+        this.code = apiCode.getCode();
+        this.msg = apiCode.getMsg();
+        this.body = body;
     }
 
-    public static ApiResult successBody(String msg, Object body) {
-        return new ApiResult(ApiCodeEnum.SUCCESS.getCode(), StrUtil.blankToDefault(msg, ApiCodeEnum.SUCCESS.getMsg()), body);
+    public ApiResult(IApiCode apiCode, String msg, T body) {
+        this.code = apiCode.getCode();
+        this.msg = StrUtil.blankToDefault(msg, apiCode.getMsg());
+        this.body = body;
     }
 
-    public static ApiResult fail() {
-        return new ApiResult(ApiCodeEnum.FAIL.getCode(), ApiCodeEnum.FAIL.getMsg(), null);
+    public static <T> ApiResult<T> success() {
+        return new ApiResult(ApiCode.SUCCESS);
     }
 
-    public static ApiResult fail(String msg) {
-        return new ApiResult(ApiCodeEnum.FAIL.getCode(), StrUtil.blankToDefault(msg, ApiCodeEnum.FAIL.getMsg()), null);
+    public static <T> ApiResult<T> success(String msg) {
+        return new ApiResult(ApiCode.SUCCESS, msg);
+    }
+
+    public static <T> ApiResult<T> successBody(T body) {
+        return new ApiResult(ApiCode.SUCCESS, body);
+    }
+
+    public static <T> ApiResult<T> successBody(String msg, Object body) {
+        return new ApiResult(ApiCode.SUCCESS, msg, body);
+    }
+
+    public static <T> ApiResult<T> fail() {
+        return new ApiResult(ApiCode.FAIL);
+    }
+
+    public static <T> ApiResult<T> fail(String msg) {
+        return new ApiResult(ApiCode.FAIL, msg);
+    }
+
+    public static <T> ApiResult<T> badRequest() {
+        return new ApiResult(ApiCode.BAD_REQUEST);
+    }
+
+    public static <T> ApiResult<T> badRequest(String msg) {
+        return new ApiResult(ApiCode.BAD_REQUEST, msg);
+    }
+
+    public static <T> ApiResult<T> forbidden() {
+        return new ApiResult(ApiCode.FORBIDDEN);
+    }
+
+    public static <T> ApiResult<T> forbidden(String msg) {
+        return new ApiResult(ApiCode.FORBIDDEN, msg);
+    }
+
+    public static <T> ApiResult<T> notFound() {
+        return new ApiResult(ApiCode.NOT_FOUND);
+    }
+
+    public static <T> ApiResult<T> notFound(String msg) {
+        return new ApiResult(ApiCode.NOT_FOUND, msg);
     }
 
 }

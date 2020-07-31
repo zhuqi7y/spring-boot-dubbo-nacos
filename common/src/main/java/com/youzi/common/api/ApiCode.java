@@ -5,7 +5,7 @@ package com.youzi.common.api;
  * @author: zhuqi
  * @date: 2020年07月22日 15:20
  */
-public enum ApiCodeEnum {
+public enum ApiCode implements IApiCode {
 
     SUCCESS(200,"成功"),
     BAD_REQUEST(400, "请求参数有误"),
@@ -16,7 +16,7 @@ public enum ApiCodeEnum {
     private Integer code;
     private String msg;
 
-    ApiCodeEnum(Integer code, String msg) {
+    ApiCode(Integer code, String msg) {
         this.code = code;
         this.msg = msg;
     }
