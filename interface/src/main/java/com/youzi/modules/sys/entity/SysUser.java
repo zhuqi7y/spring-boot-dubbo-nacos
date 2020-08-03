@@ -1,5 +1,6 @@
 package com.youzi.modules.sys.entity;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
@@ -7,7 +8,7 @@ import java.time.LocalDateTime;
  * @author: zhuqi
  * @date: 2020年07月22日 14:19
  */
-public class SysUser {
+public class SysUser implements Serializable {
     private Long id;
     private String loginName;
     private String password;

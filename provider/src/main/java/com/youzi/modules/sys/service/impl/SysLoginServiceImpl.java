@@ -1,5 +1,6 @@
 package com.youzi.modules.sys.service.impl;
 
+import com.youzi.common.constant.DubboConstant;
 import com.youzi.modules.sys.entity.SysUser;
 import com.youzi.modules.sys.mapper.SysLoginMapper;
 import com.youzi.modules.sys.service.SysLoginService;
@@ -11,7 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  * @author: zhuqi
  * @date: 2020年07月23日 9:26
  */
-@DubboService(version = "${dubbo.provider.version}", group = "${dubbo.provider.group}")
+@DubboService(version = DubboConstant.VERSION, group = DubboConstant.GROUP)
 public class SysLoginServiceImpl implements SysLoginService {
 
     @Autowired

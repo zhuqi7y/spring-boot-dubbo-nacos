@@ -1,5 +1,6 @@
 package com.youzi.modules.example.entity;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
@@ -7,7 +8,7 @@ import java.time.LocalDateTime;
  * @author: zhuqi
  * @date: 2020年07月22日 10:48
  */
-public class Example {
+public class Example implements Serializable {
     private Long id;
     private String title;
     private Integer type;

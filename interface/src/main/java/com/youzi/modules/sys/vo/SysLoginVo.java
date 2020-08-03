@@ -1,5 +1,6 @@
 package com.youzi.modules.sys.vo;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
@@ -7,7 +8,7 @@ import java.time.LocalDateTime;
  * @author: zhuqi
  * @date: 2020年07月22日 14:44
  */
-public class SysLoginVo {
+public class SysLoginVo implements Serializable {
     private String userName;
     private String phone;
     private LocalDateTime lastLoginTime;

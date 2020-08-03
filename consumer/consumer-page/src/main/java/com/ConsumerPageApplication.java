@@ -5,8 +5,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 
-@NacosPropertySource(dataId = "${spring.application.name}", autoRefreshed = true)
 @SpringBootApplication(exclude = {DataSourceAutoConfiguration.class})
+@NacosPropertySource(dataId = "${spring.application.name}", autoRefreshed = true)
 public class ConsumerPageApplication /*extends SpringBootServletInitializer*/ {
 
     public static void main(String[] args) {

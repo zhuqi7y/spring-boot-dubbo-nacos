@@ -1,6 +1,7 @@
 package com.youzi.modules.example.service.impl;
 
 import com.github.pagehelper.PageInfo;
+import com.youzi.common.constant.DubboConstant;
 import com.youzi.common.query.DeleteQuery;
 import com.youzi.modules.example.entity.Example;
 import com.youzi.modules.example.mapper.ExampleMapper;
@@ -17,7 +18,7 @@ import java.util.List;
  * @author: zhuqi
  * @date: 2020年07月22日 15:55
  */
-@DubboService(version = "${dubbo.provider.version}", group = "${dubbo.provider.group}")
+@DubboService(version = DubboConstant.VERSION, group = DubboConstant.GROUP)
 public class ExampleServiceImpl implements ExampleService {
 
     @Autowired

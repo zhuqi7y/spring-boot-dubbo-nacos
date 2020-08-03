@@ -1,13 +1,14 @@
 package com.youzi.modules.sys.query;
 
 import javax.validation.constraints.NotBlank;
+import java.io.Serializable;
 
 /**
  * @Description: 用户登录查询对象
  * @author: zhuqi
  * @date: 2020年07月22日 14:20
  */
-public class SysLoginQuery {
+public class SysLoginQuery implements Serializable {
     @NotBlank(message="登录名或手机号不能为空")
     private String loginName;
     @NotBlank(message="密码不能为空")

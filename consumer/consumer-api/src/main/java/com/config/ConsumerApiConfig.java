@@ -9,7 +9,7 @@ import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -32,8 +32,8 @@ public class ConsumerApiConfig implements WebMvcConfigurer {
             SerializerFeature.WriteNullStringAsEmpty, //字符类型字段如果为null,输出为"",而非null
             SerializerFeature.WriteNullBooleanAsFalse, //Boolean字段如果为null,输出为false,而非null
             SerializerFeature.DisableCircularReferenceDetect, //循环引用
-            SerializerFeature.PrettyFormat, //格式化输出
-            SerializerFeature.WriteDateUseDateFormat
+            SerializerFeature.PrettyFormat //格式化输出
+            //SerializerFeature.WriteDateUseDateFormat
     };
 
     /**
@@ -43,17 +43,12 @@ public class ConsumerApiConfig implements WebMvcConfigurer {
     @Override
     public void configureMessageConverters(List<HttpMessageConverter<?>> converters) {
         FastJsonHttpMessageConverter fastConverter = new FastJsonHttpMessageConverter();
-
         FastJsonConfig fastJsonConfig = new FastJsonConfig();
         fastJsonConfig.setSerializerFeatures(serializerFeatures);
         fastJsonConfig.setDateFormat("yyyy-MM-dd HH:mm:ss");
         fastJsonConfig.setCharset(StandardCharsets.UTF_8);
         fastConverter.setFastJsonConfig(fastJsonConfig);
-
-        List<MediaType> supportedMediaTypes = new ArrayList<>();
-        supportedMediaTypes.add(MediaType.APPLICATION_JSON);
-        fastConverter.setSupportedMediaTypes(supportedMediaTypes);
-
+        fastConverter.setSupportedMediaTypes(Arrays.asList(MediaType.APPLICATION_JSON));
         converters.add(0, fastConverter);
     }
 
