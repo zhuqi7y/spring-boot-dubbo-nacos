@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<div th:fragment="foot">
+    <script th:src="@{/lib/jquery-3.4.1/jquery-3.4.1.min.js}" charset="utf-8"></script>
+    <script>
+        $(function () {
+            $.ajax({
+                type: "post",
+                url: '[[${apiPath}]]sysLogin/isLogin',
+                dataType: 'json',
+                sync: true,
+                xhrFields: {withCredentials: true},
+                error: function() {
+                    layer.msg('请求超时，请重新登录', {icon: 2, time: 3000, shadeClose: true, end: function () {
+                            window.location.href = '[[@{/login}]]';
+                        }});
+                },
+                success: function (d) {
+                    if (d.code != 200 || !d.body) {
+                        window.location.href = '[[@{/login}]]';
+                    }
+                }
+            });
+        });
+    </script>
+</div>
