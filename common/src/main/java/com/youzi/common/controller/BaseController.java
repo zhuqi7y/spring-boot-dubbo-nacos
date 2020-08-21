@@ -37,7 +37,7 @@ public abstract class BaseController {
         if(StrUtil.isBlank(captchaSes)) {
             CustomException.badRequest("验证码过期");
         }
-        if(!captcha.equals(captchaSes)) {
+        if(!captcha.toLowerCase().equals(captchaSes.toLowerCase())) {
             session.removeAttribute(SessionConstant.CAPTCHA);
             CustomException.badRequest("验证码错误");
         }
