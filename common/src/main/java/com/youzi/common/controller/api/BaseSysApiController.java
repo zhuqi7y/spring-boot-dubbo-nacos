@@ -1,5 +1,8 @@
 package com.youzi.common.controller.api;
 
+import com.youzi.common.api.ApiEnum;
+import com.youzi.common.constant.SessionConstant;
+import com.youzi.common.exception.CustomException;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
 /**
@@ -16,6 +19,14 @@ public abstract class BaseSysApiController extends BaseApiController {
     * @Return: void
     */
     @ModelAttribute
-    public final void checkSysUserLogin() {
+    public final void beforeAllRequestCheck() {
+        if(getSysUserid() != null && getSysUserid() == 0) {
+            throw new CustomException(ApiEnum.UNAUTHORIZED);
+        }
     }
+
+    public Integer getSysUserid() {
+        return (Integer) session.getAttribute(SessionConstant.LOGIN_CODE);
+    }
+
 }

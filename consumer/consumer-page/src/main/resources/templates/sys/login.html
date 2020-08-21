@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>后台管理-登陆</title>
@@ -9,7 +9,8 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="format-detection" content="telephone=no">
-    <link rel="stylesheet" href="../lib/layui-v2.5.5/css/layui.css" media="all">
+    <link rel="icon" th:href="@{/images/favicon.ico}">
+    <link rel="stylesheet" th:href="@{/lib/layui-v2.5.5/css/layui.css}" media="all">
     <!--[if lt IE 9]>
     <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
     <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
@@ -35,23 +36,23 @@
 <div class="layui-container">
     <div class="admin-login-background">
         <div class="layui-form login-form">
-            <form class="layui-form" action="">
+            <form id="formId" class="layui-form" action="">
                 <div class="layui-form-item logo-title">
                     <h1>LayuiMini后台登录</h1>
                 </div>
                 <div class="layui-form-item">
                     <label class="layui-icon layui-icon-username" for="username"></label>
-                    <input type="text" name="username" lay-verify="required|account" placeholder="用户名或者邮箱" autocomplete="off" class="layui-input" value="admin">
+                    <input type="text" name="loginName" lay-verify="required|account" placeholder="用户名或者邮箱" autocomplete="off" class="layui-input" value="admin">
                 </div>
                 <div class="layui-form-item">
                     <label class="layui-icon layui-icon-password" for="password"></label>
-                    <input type="password" name="password" lay-verify="required|password" placeholder="密码" autocomplete="off" class="layui-input" value="123456">
+                    <input type="password" name="password" lay-verify="required|password" placeholder="密码" autocomplete="off" class="layui-input" value="admin">
                 </div>
                 <div class="layui-form-item">
                     <label class="layui-icon layui-icon-vercode" for="captcha"></label>
                     <input type="text" name="captcha" lay-verify="required|captcha" placeholder="图形验证码" autocomplete="off" class="layui-input verification captcha" value="xszg">
                     <div class="captcha-img">
-                        <img id="captchaPic" src="../images/captcha.jpg">
+                        <img id="captchaPic" th:src="${apiPath}+'captcha'" onclick="refreshCaptcha();">
                     </div>
                 </div>
                 <div class="layui-form-item">
@@ -64,13 +65,14 @@
         </div>
     </div>
 </div>
-<script src="../lib/jquery-3.4.1/jquery-3.4.1.min.js" charset="utf-8"></script>
-<script src="../lib/layui-v2.5.5/layui.js" charset="utf-8"></script>
-<script src="../lib/jq-module/jquery.particleground.min.js" charset="utf-8"></script>
+<script th:src="@{/lib/jquery-3.4.1/jquery-3.4.1.min.js}" charset="utf-8"></script>
+<script th:src="@{/lib/layui-v2.5.5/layui.js}" charset="utf-8"></script>
+<script th:src="@{/lib/jq-module/jquery.particleground.min.js}" charset="utf-8"></script>
 <script>
     layui.use(['form'], function () {
         var form = layui.form,
-            layer = layui.layer;
+            layer = layui.layer,
+            $ = layui.jquery;
 
         // 登录过期的时候，跳出ifram框架
         if (top.location != self.location) top.location = self.location;
@@ -98,12 +100,43 @@
                 layer.msg('验证码不能为空');
                 return false;
             }
-            layer.msg('登录成功', function () {
-                window.location = '../index.html';
+            var loadFlag;
+            $.ajax({
+                type: "post",
+                url: '[[${apiPath}]]sysLogin/login',
+                dataType: 'json',
+                data:$('#formId').serialize(),
+                xhrFields: {withCredentials: true},
+                beforeSend: function() {
+                    loadFlag = layer.load(0, {shade: [0.1,'#fff']});
+                },
+                complete: function() {
+                    refreshCaptcha();
+                    layer.close(loadFlag);
+                },
+                error: function() {
+                    layer.alert('请求超时', {icon: 2});
+                },
+                success: function (d) {
+                    if (d.code === 200) {
+                        /*layer.alert('登录成功', {icon: 1, closeBtn: 0, time: 3000}, function () {
+                            window.location.href = '[[@{/index}]]';
+                        });*/
+                        layer.msg('登录成功', {icon: 1, time: 1000, shadeClose: true, end: function () {
+                                window.location.href = '[[@{/sys/index}]]';
+                            }});
+                    } else {
+                        layer.alert(d.msg, {icon: 2});
+                    }
+                }
             });
             return false;
         });
     });
+
+    function refreshCaptcha() {
+        $('#captchaPic').attr('src', '[[${apiPath}]]captcha?'+Math.random());
+    }
 </script>
 </body>
 </html>

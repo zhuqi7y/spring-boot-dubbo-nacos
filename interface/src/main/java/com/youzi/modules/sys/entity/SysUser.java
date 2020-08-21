@@ -9,9 +9,10 @@ import java.time.LocalDateTime;
  * @date: 2020年07月22日 14:19
  */
 public class SysUser implements Serializable {
-    private Long id;
+    private Integer id;
     private String loginName;
     private String password;
+    private String realPassword;
     private String userName;
     private String phone;
     private LocalDateTime lastLoginTime;
@@ -20,13 +21,13 @@ public class SysUser implements Serializable {
     private LocalDateTime deleteTime;
     private boolean enabled;
     private String remark;
-    private Long orderby;
+    private Integer orderby;
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -44,6 +45,14 @@ public class SysUser implements Serializable {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getRealPassword() {
+        return realPassword;
+    }
+
+    public void setRealPassword(String realPassword) {
+        this.realPassword = realPassword;
     }
 
     public String getUserName() {
@@ -110,11 +119,11 @@ public class SysUser implements Serializable {
         this.remark = remark;
     }
 
-    public Long getOrderby() {
+    public Integer getOrderby() {
         return orderby;
     }
 
-    public void setOrderby(Long orderby) {
+    public void setOrderby(Integer orderby) {
         this.orderby = orderby;
     }
 }

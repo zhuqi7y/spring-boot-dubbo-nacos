@@ -16,7 +16,7 @@ public interface SysLoginMapper {
      * @param loginName:
      * @Return: boolean
      */
-    boolean isLoginNameOrPhoneExisted(String loginName);
+    Boolean isLoginNameOrPhoneExisted(String loginName);
 
     /**
      * @Description: 根据用户名或手机号获取对象

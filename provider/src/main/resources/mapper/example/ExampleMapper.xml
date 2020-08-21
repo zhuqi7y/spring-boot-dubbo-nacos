@@ -45,12 +45,14 @@
   </update>
 
   <select id="selectById" parameterType="long" resultType="com.youzi.modules.example.vo.ExampleVo">
-    select id, title, type, content, addTime, updateTime, remark from example
+    select id, title, type, content, addTime, updateTime, remark
+    from example
     where enabled = 1 and id = #{id}
   </select>
 
   <select id="selectPage" parameterType="com.youzi.modules.example.query.ExampleQuery" resultType="com.youzi.modules.example.vo.ExampleVo">
-    select id, title, type, content, addTime, updateTime, remark from example
+    select id, title, type, content, addTime, updateTime, remark
+    from example
     where enabled = 1
     <if test="title != null and title != ''">
       and title = #{title}
@@ -59,6 +61,10 @@
       and type = #{type}
     </if>
     order by orderby
+  </select>
+
+  <select id="existById" parameterType="long" resultType="boolean">
+    select ifnull((select 1 from example where id = #{id} limit 1), 0)
   </select>
 
 </mapper>

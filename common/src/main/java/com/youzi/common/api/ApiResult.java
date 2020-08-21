@@ -21,6 +21,11 @@ public class ApiResult {
         this.body = null;
     }
 
+    public ApiResult(int code, String msg) {
+        this.code = code;
+        this.msg = msg;
+    }
+
     public int getCode() {
         return code;
     }
@@ -50,6 +55,7 @@ public class ApiResult {
     public static ApiResult badRequest() { return new ApiResult(ApiEnum.BAD_REQUEST); }
     public static ApiResult forbidden() { return new ApiResult(ApiEnum.FORBIDDEN); }
     public static ApiResult notFound() { return new ApiResult(ApiEnum.NOT_FOUND); }
+    public static ApiResult unauthorized() { return new ApiResult(ApiEnum.UNAUTHORIZED); }
 
     public ApiResult msg(String msg) {
         if(StrUtil.isNotBlank(msg)) {

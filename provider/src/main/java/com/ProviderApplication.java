@@ -16,7 +16,7 @@ public class ProviderApplication /*extends SpringBootServletInitializer*/ {
 
     /*@Override
     protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
-        return application.sources(SpringBootDubboNacosApplication.class);
+        return application.sources(ProviderApplication.class);
     }*/
 
 }

@@ -9,6 +9,7 @@ public enum ApiEnum implements IApiCode {
 
     SUCCESS(200,"成功"),
     BAD_REQUEST(400, "请求参数有误"),
+    UNAUTHORIZED(401, "未进行身份验证或验证已过期"),
     FORBIDDEN(403,"访问受限，授权过期"),
     NOT_FOUND(404,"接口地址错误"),
     FAIL(500,"失败");

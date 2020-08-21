@@ -1,6 +1,7 @@
 package com.config;
 
 import com.youzi.common.api.ApiResult;
+import com.youzi.common.exception.CustomException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.converter.HttpMessageConversionException;
@@ -35,6 +36,14 @@ public class ConsumerApiExceptionHandle {
     private Logger logger = LoggerFactory.getLogger(ConsumerApiExceptionHandle.class);
 
     /**
+     * @description: 自定义异常
+     */
+    @ExceptionHandler(CustomException.class)
+    public ApiResult customErrorHandler(HttpServletRequest request, CustomException e) {
+        return new ApiResult(e.getCode(), e.getMsg());
+    }
+
+    /**
      * @description: 传入参数类型不匹配
      */
     @ExceptionHandler(MethodArgumentTypeMismatchException.class)
@@ -59,7 +68,7 @@ public class ConsumerApiExceptionHandle {
     public ApiResult validatedErrorHandler(HttpServletRequest request, MethodArgumentNotValidException e) {
         BindingResult bindingResult = e.getBindingResult();
         String message = bindingResult.getAllErrors().get(0).getDefaultMessage();
-        logger.info("MethodArgumentNotValidException:" + request.getRequestURI(), e);
+        //logger.info("MethodArgumentNotValidException:" + request.getRequestURI());
         return ApiResult.badRequest().msg(message);
     }
 
@@ -70,7 +79,7 @@ public class ConsumerApiExceptionHandle {
     public ApiResult validatedErrorHandler(HttpServletRequest request, BindException e) {
         BindingResult bindingResult = e.getBindingResult();
         String message = bindingResult.getAllErrors().get(0).getDefaultMessage();
-        logger.info("BindException:"+request.getRequestURI(), e);
+        //logger.info("BindException:"+request.getRequestURI());
         return ApiResult.badRequest().msg(message);
     }
 
@@ -93,7 +102,7 @@ public class ConsumerApiExceptionHandle {
             msgList.add(constraintViolation.getMessage());
         }
         //String messages = StringUtils.join(msgList.toArray(), ";");
-        logger.info("ConstraintViolationException:"+request.getRequestURI(), e);
+        logger.info("ConstraintViolationException:"+request.getRequestURI());
         return ApiResult.badRequest().msg(msgList.get(0));
     }
 
@@ -102,7 +111,7 @@ public class ConsumerApiExceptionHandle {
      */
     @ExceptionHandler(ValidationException.class)
     public ApiResult handleValidationException(HttpServletRequest request, ValidationException e) {
-        logger.error("参数验证失败,ValidationException:"+request.getRequestURI(), e);
+        logger.info("参数验证失败,ValidationException:"+request.getRequestURI());
         return ApiResult.badRequest().msg("参数验证失败");
     }
 
@@ -111,7 +120,7 @@ public class ConsumerApiExceptionHandle {
      */
     @ExceptionHandler(NoHandlerFoundException.class)
     public ApiResult noHandlerFoundErrorHandler(HttpServletRequest request, NoHandlerFoundException e) {
-        logger.info("错误的请求地址：" + request.getRequestURI(), e);
+        logger.info("错误的请求地址：" + request.getRequestURI());
         return ApiResult.notFound();
     }
 

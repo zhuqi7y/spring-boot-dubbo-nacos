@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.youzi.modules.sys.mapper.SysInfoMapper">
+
+  <select id="selectOneByType" parameterType="integer" resultType="com.youzi.modules.sys.vo.SysInfoVo">
+    select title, image, href from sys_info where enabled = 1 and type = #{type} order by add_time desc limit 1
+  </select>
+
+  <select id="selectAllMenuByParent" parameterType="integer" resultType="com.youzi.modules.sys.entity.SysInfo">
+    select id, title, href, image, icon, target, parent, level, type, add_time "addTime", add_userid "addUserid",
+        update_time "updateTime", update_userid "updateUserid", delete_time "deleteTime", delete_userid "deleteUserid", enabled
+    from sys_info where enabled = 1 and type = 3 and parent =
+    <choose>
+      <when test="parent != null">
+        #{parent}
+      </when>
+      <otherwise>
+        0
+      </otherwise>
+    </choose>
+  </select>
+
+  <select id="existChildByParent" parameterType="integer" resultType="boolean">
+    select ifnull((select 1 from sys_info where enabled = 1 and parent = #{parent} limit 1), 0)
+  </select>
+
+</mapper>

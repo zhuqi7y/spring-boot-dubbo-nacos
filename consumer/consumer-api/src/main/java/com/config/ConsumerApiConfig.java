@@ -3,11 +3,16 @@ package com.config;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.alibaba.fastjson.support.config.FastJsonConfig;
 import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter;
+import com.youzi.common.constant.ApiConstant;
 import org.springframework.boot.autoconfigure.http.HttpMessageConverters;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.MediaType;
 import org.springframework.http.converter.HttpMessageConverter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
 
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -22,6 +27,34 @@ import java.util.List;
 @Configuration
 public class ConsumerApiConfig {
 
+    /**
+     * @description: 跨域过滤器
+     * @author zhuqi
+     * @date 2020-08-21
+     */
+	@Bean
+    public FilterRegistrationBean<CorsFilter> corsFilterRegistrationBean() {
+    	CorsConfiguration config = new CorsConfiguration();
+        config.setAllowCredentials(true);
+        config.setAllowedOrigins(Arrays.asList(ApiConstant.PAGE_DEV_ORIGIN));
+        config.addAllowedHeader("*");
+        config.addAllowedMethod("*");
+        // 设置跨域缓存时间为30分钟
+        config.setMaxAge(1800L);
+        // 注册CORS过滤器
+        UrlBasedCorsConfigurationSource configurationSource = new UrlBasedCorsConfigurationSource();
+        configurationSource.registerCorsConfiguration("/**", config);
+        CorsFilter corsFilter = new CorsFilter(configurationSource);
+        FilterRegistrationBean<CorsFilter> CorsBean = new FilterRegistrationBean<>(corsFilter);
+        CorsBean.setOrder(0);//设置过滤器优先级最高
+        return CorsBean;
+    }
+
+    /**
+     * @description: 配置默认fastjson转换器
+     * @author zhuqi
+     * @date 2020-08-21
+     */
     @Bean
     public HttpMessageConverters customConverters() {
         List<HttpMessageConverter<?>> converters = new ArrayList<>();

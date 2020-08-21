@@ -66,4 +66,13 @@ public interface ExampleMapper {
      * @Return: com.github.pagehelper.PageInfo<com.youzi.modules.example.entity.ExampleVo>
      */
     List<ExampleVo> selectPage(ExampleQuery exampleQuery);
+
+    /**
+    * @Description: 判断id是否存在
+    * @author: zhuqi
+    * @date: 2020/8/18 17:30
+    * @param id:
+    * @Return: java.lang.Boolean
+    */
+    Boolean existById(Long id);
 }
