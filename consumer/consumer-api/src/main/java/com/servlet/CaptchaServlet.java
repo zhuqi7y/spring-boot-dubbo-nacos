@@ -2,10 +2,11 @@ package com.servlet;
 
 import cn.hutool.captcha.CaptchaUtil;
 import cn.hutool.captcha.LineCaptcha;
-import com.youzi.common.constant.SessionConstant;
+import cn.hutool.core.util.IdUtil;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -24,7 +25,9 @@ public class CaptchaServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         LineCaptcha captcha = CaptchaUtil.createLineCaptcha(110, 40);
         captcha.createCode();
-        req.getSession().setAttribute(SessionConstant.CAPTCHA, captcha.getCode());
+        //req.getSession().setAttribute(SessionConstant.CAPTCHA, captcha.getCode());
+        Cookie cookie = new Cookie("captcha", IdUtil.simpleUUID());
+        resp.addCookie(cookie);
         OutputStream out = resp.getOutputStream();
         captcha.write(out);
         out.flush();

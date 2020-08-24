@@ -1,9 +1,13 @@
 package com.youzi.common.controller.api;
 
+import cn.hutool.core.convert.Convert;
+import com.auth0.jwt.JWT;
 import com.youzi.common.api.ApiEnum;
-import com.youzi.common.constant.SessionConstant;
 import com.youzi.common.exception.CustomException;
 import org.springframework.web.bind.annotation.ModelAttribute;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.Optional;
 
 /**
  * @Description: TODO
@@ -19,14 +23,16 @@ public abstract class BaseSysApiController extends BaseApiController {
     * @Return: void
     */
     @ModelAttribute
-    public final void beforeAllRequestCheck() {
-        if(getSysUserid() != null && getSysUserid() == 0) {
+    public final void beforeAllRequestCheck(HttpServletRequest request) {
+        String token = Optional.ofNullable(request).map(r -> r.getHeader("token")).orElse("");
+        if(!isLogin(token)) {
             throw new CustomException(ApiEnum.UNAUTHORIZED);
         }
     }
 
     public Integer getSysUserid() {
-        return (Integer) session.getAttribute(SessionConstant.LOGIN_CODE);
+        String token = request.getHeader("token");
+        return Convert.toInt(JWT.decode(token).getAudience().get(0), 0);
     }
 
 }

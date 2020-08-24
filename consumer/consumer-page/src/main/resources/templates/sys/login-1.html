@@ -9,8 +9,9 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="format-detection" content="telephone=no">
-    <link rel="icon" th:href="@{/images/favicon.ico}">
-    <link rel="stylesheet" th:href="@{/lib/layui-v2.5.5/css/layui.css}" media="all">
+    <base th:href="@{/}">
+    <link rel="icon" href="images/favicon.ico">
+    <link rel="stylesheet" href="lib/layui-v2.5.5/css/layui.css" media="all">
     <!--[if lt IE 9]>
     <script src="https://cdn.staticfile.org/html5shiv/r29/html5.min.js"></script>
     <script src="https://cdn.staticfile.org/respond.js/1.4.2/respond.min.js"></script>
@@ -36,21 +37,21 @@
 <div class="layui-container">
     <div class="admin-login-background">
         <div class="layui-form login-form">
-            <form id="formId" class="layui-form" action="">
+            <form class="layui-form" action="">
                 <div class="layui-form-item logo-title">
                     <h1>LayuiMini后台登录</h1>
                 </div>
                 <div class="layui-form-item">
                     <label class="layui-icon layui-icon-username" for="loginName"></label>
-                    <input type="text" name="loginName" lay-verify="required|account" placeholder="用户名或者手机号" autocomplete="off" class="layui-input" value="admin">
+                    <input type="text" name="loginName" lay-verify="required|account" placeholder="用户名或者邮箱" autocomplete="off" class="layui-input" value="admin">
                 </div>
                 <div class="layui-form-item">
                     <label class="layui-icon layui-icon-password" for="password"></label>
-                    <input type="password" name="password" lay-verify="required" placeholder="密码" autocomplete="off" class="layui-input" value="admin">
+                    <input type="password" name="password" lay-verify="required|password" placeholder="密码" autocomplete="off" class="layui-input" value="123456">
                 </div>
                 <div class="layui-form-item">
                     <label class="layui-icon layui-icon-vercode" for="captcha"></label>
-                    <input type="text" name="captcha" lay-verify="required" placeholder="图形验证码" autocomplete="off" class="layui-input verification captcha" value="">
+                    <input type="text" name="captcha" lay-verify="required|captcha" placeholder="图形验证码" autocomplete="off" class="layui-input verification captcha" value="xszg">
                     <div class="captcha-img">
                         <img id="captchaPic" th:src="${apiPath}+'captcha'" onclick="refreshCaptcha();">
                     </div>
@@ -65,10 +66,9 @@
         </div>
     </div>
 </div>
-<script th:src="@{/lib/jquery-3.4.1/jquery-3.4.1.min.js}" charset="utf-8"></script>
-<script th:src="@{/js/jquery.cookie.min.js}"></script>
-<script th:src="@{/lib/layui-v2.5.5/layui.js}" charset="utf-8"></script>
-<script th:src="@{/lib/jq-module/jquery.particleground.min.js}" charset="utf-8"></script>
+<script src="lib/jquery-3.4.1/jquery-3.4.1.min.js" charset="utf-8"></script>
+<script src="lib/layui-v2.5.5/layui.js" charset="utf-8"></script>
+<script src="lib/jq-module/jquery.particleground.min.js" charset="utf-8"></script>
 <script>
     layui.use(['form'], function () {
         var form = layui.form,
@@ -112,7 +112,9 @@
                 url: '[[${apiPath}]]sysLogin/login',
                 dataType: 'json',
                 contentType: "application/json",
-                data:JSON.stringify(obj),
+                data:JSON.stringify(obj)),
+                xhrFields: {withCredentials: true},
+                crossDomain: true,
                 beforeSend: function() {
                     loadFlag = layer.load(0, {shade: [0.1,'#fff']});
                 },
@@ -124,10 +126,9 @@
                     layer.alert('请求超时', {icon: 2});
                 },
                 success: function (d) {
-                    if (d.code === 200 && d.body != '') {
+                    if (d.code === 200) {
                         layer.msg('登录成功', {icon: 1, time: 1000, shadeClose: true, end: function () {
-                                $.cookie('token', d.body, { expires: 7, path: '/' });
-                                window.location.href = '[[@{/sys/index}]]';
+                                window.location.href = 'sys/index';
                             }});
                     } else {
                         layer.alert(d.msg, {icon: 2});

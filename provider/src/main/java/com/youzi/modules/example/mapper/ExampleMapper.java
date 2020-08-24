@@ -56,7 +56,7 @@ public interface ExampleMapper {
      * @param id:
      * @Return: com.youzi.modules.example.entity.ExampleVo
      */
-    ExampleVo selectById(Long id);
+    ExampleVo selectById(Integer id);
 
     /**
      * @Description: 根据查询条件，查询多条记录并分页
@@ -74,5 +74,5 @@ public interface ExampleMapper {
     * @param id:
     * @Return: java.lang.Boolean
     */
-    Boolean existById(Long id);
+    Boolean existById(Integer id);
 }

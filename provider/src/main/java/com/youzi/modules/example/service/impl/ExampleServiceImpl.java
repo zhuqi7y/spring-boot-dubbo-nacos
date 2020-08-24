@@ -44,7 +44,7 @@ public class ExampleServiceImpl implements ExampleService {
      * @Return: int
      */
     @Override
-    public Long addAndGetId(Example example) {
+    public Integer addAndGetId(Example example) {
         if(exampleMapper.addAndGetId(example) > 0) {
             return example.getId();
         }
@@ -83,7 +83,7 @@ public class ExampleServiceImpl implements ExampleService {
      * @Return: com.youzi.modules.example.entity.ExampleVo
      */
     @Override
-    public ExampleVo selectById(Long id) {
+    public ExampleVo selectById(Integer id) {
         return exampleMapper.selectById(id);
     }
 

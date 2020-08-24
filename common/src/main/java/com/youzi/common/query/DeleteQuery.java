@@ -13,7 +13,7 @@ public class DeleteQuery implements Serializable {
     @NotBlank(message = "ids不能为空")
     private String ids;
 
-    private Long deleteSysUserid;
+    private Integer deleteSysUserid;
 
     public String getIds() {
         return ids;
@@ -23,11 +23,11 @@ public class DeleteQuery implements Serializable {
         this.ids = ids;
     }
 
-    public Long getDeleteSysUserid() {
+    public Integer getDeleteSysUserid() {
         return deleteSysUserid;
     }
 
-    public void setDeleteSysUserid(Long deleteSysUserid) {
+    public void setDeleteSysUserid(Integer deleteSysUserid) {
         this.deleteSysUserid = deleteSysUserid;
     }
 }

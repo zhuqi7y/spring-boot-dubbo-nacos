@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
  * @date: 2020年07月22日 14:40
  */
 public class ExampleVo implements Serializable {
-    private Long id;
+    private Integer id;
     private String title;
     private Integer type;
     private String content;
@@ -18,11 +18,11 @@ public class ExampleVo implements Serializable {
     private LocalDateTime updateTime;
     private String remark;
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

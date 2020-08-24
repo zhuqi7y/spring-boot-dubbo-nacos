@@ -44,7 +44,7 @@
     </foreach>
   </update>
 
-  <select id="selectById" parameterType="long" resultType="com.youzi.modules.example.vo.ExampleVo">
+  <select id="selectById" parameterType="integer" resultType="com.youzi.modules.example.vo.ExampleVo">
     select id, title, type, content, addTime, updateTime, remark
     from example
     where enabled = 1 and id = #{id}
@@ -55,15 +55,15 @@
     from example
     where enabled = 1
     <if test="title != null and title != ''">
-      and title = #{title}
+      and title like concat('%', #{title}, '%')
     </if>
     <if test="type != null and type != 0">
       and type = #{type}
     </if>
-    order by orderby
+    order by orderby, id desc
   </select>
 
-  <select id="existById" parameterType="long" resultType="boolean">
+  <select id="existById" parameterType="integer" resultType="boolean">
     select ifnull((select 1 from example where id = #{id} limit 1), 0)
   </select>
 

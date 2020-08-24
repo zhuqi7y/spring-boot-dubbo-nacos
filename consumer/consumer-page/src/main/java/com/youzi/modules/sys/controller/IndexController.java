@@ -36,12 +36,4 @@ public class IndexController extends BasePageController {
         return "500";
     }
 
-    /**
-     * @description: 登录页
-     */
-    @RequestMapping("/login")
-    public String login() {
-        return "sys/login";
-    }
-
 }

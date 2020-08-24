@@ -3,7 +3,6 @@ package com.config;
 import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.alibaba.fastjson.support.config.FastJsonConfig;
 import com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter;
-import com.youzi.common.constant.ApiConstant;
 import org.springframework.boot.autoconfigure.http.HttpMessageConverters;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
@@ -36,7 +35,7 @@ public class ConsumerApiConfig {
     public FilterRegistrationBean<CorsFilter> corsFilterRegistrationBean() {
     	CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true);
-        config.setAllowedOrigins(Arrays.asList(ApiConstant.PAGE_DEV_ORIGIN));
+        config.addAllowedOrigin("*");
         config.addAllowedHeader("*");
         config.addAllowedMethod("*");
         // 设置跨域缓存时间为30分钟

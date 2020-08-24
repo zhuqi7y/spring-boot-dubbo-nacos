@@ -1,6 +1,6 @@
 package com.youzi.modules.example.controller;
 
-import com.youzi.common.controller.page.BaseSysPageController;
+import com.youzi.common.controller.page.BasePageController;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -10,10 +10,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * @date: 2020年07月22日 11:40
  */
 @Controller
-@RequestMapping("/example/")
-public class ExamplePageController extends BaseSysPageController {
+@RequestMapping("/example")
+public class ExamplePageController extends BasePageController {
 
-    @RequestMapping("list")
+    @RequestMapping("/list")
     public String list() {
         return "example/list";
     }

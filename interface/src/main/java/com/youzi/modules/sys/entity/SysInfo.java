@@ -20,11 +20,11 @@ public class SysInfo implements Serializable {
     private Integer level;
     private Integer type;
     private LocalDateTime addTime;
-    private Long addUserid;
+    private Integer addUserid;
     private LocalDateTime updateTime;
-    private Long updateUserid;
+    private Integer updateUserid;
     private LocalDateTime deleteTime;
-    private Long deleteUserid;
+    private Integer deleteUserid;
     private Boolean enabled;
 
     public Integer getId() {
@@ -107,11 +107,11 @@ public class SysInfo implements Serializable {
         this.addTime = addTime;
     }
 
-    public Long getAddUserid() {
+    public Integer getAddUserid() {
         return addUserid;
     }
 
-    public void setAddUserid(Long addUserid) {
+    public void setAddUserid(Integer addUserid) {
         this.addUserid = addUserid;
     }
 
@@ -123,11 +123,11 @@ public class SysInfo implements Serializable {
         this.updateTime = updateTime;
     }
 
-    public Long getUpdateUserid() {
+    public Integer getUpdateUserid() {
         return updateUserid;
     }
 
-    public void setUpdateUserid(Long updateUserid) {
+    public void setUpdateUserid(Integer updateUserid) {
         this.updateUserid = updateUserid;
     }
 
@@ -139,11 +139,11 @@ public class SysInfo implements Serializable {
         this.deleteTime = deleteTime;
     }
 
-    public Long getDeleteUserid() {
+    public Integer getDeleteUserid() {
         return deleteUserid;
     }
 
-    public void setDeleteUserid(Long deleteUserid) {
+    public void setDeleteUserid(Integer deleteUserid) {
         this.deleteUserid = deleteUserid;
     }
 

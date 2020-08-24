@@ -3,7 +3,7 @@ package com.youzi.modules.sys.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.youzi.common.api.ApiResult;
 import com.youzi.common.constant.DubboConstant;
-import com.youzi.common.controller.api.BaseSysApiController;
+import com.youzi.common.controller.api.BaseApiController;
 import com.youzi.modules.sys.service.SysInfoService;
 import org.apache.dubbo.config.annotation.DubboReference;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("/sysInfo")
-public class SysInfoController extends BaseSysApiController {
+public class SysInfoController extends BaseApiController {
 
     @DubboReference(version = DubboConstant.VERSION, group = DubboConstant.GROUP)
     private SysInfoService sysInfoService;

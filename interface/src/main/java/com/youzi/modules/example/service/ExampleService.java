@@ -31,7 +31,7 @@ public interface ExampleService {
     * @param example: 
     * @Return: int
     */
-    Long addAndGetId(Example example);
+    Integer addAndGetId(Example example);
 
     /**
     * @Description: 修改一条记录，返回影响行数
@@ -58,7 +58,7 @@ public interface ExampleService {
     * @param id:
     * @Return: com.youzi.modules.example.entity.ExampleVo
     */
-    ExampleVo selectById(Long id);
+    ExampleVo selectById(Integer id);
 
     /**
     * @Description: 根据查询条件，查询多条记录并分页

@@ -1,9 +1,15 @@
 package com.youzi.modules.sys.controller;
 
+import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.crypto.SecureUtil;
+import com.alibaba.fastjson.JSON;
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.algorithms.Algorithm;
 import com.youzi.common.api.ApiResult;
 import com.youzi.common.constant.DubboConstant;
+import com.youzi.common.constant.JwtConstant;
 import com.youzi.common.constant.SessionConstant;
 import com.youzi.common.controller.api.BaseApiController;
 import com.youzi.modules.sys.entity.SysUser;
@@ -12,8 +18,11 @@ import com.youzi.modules.sys.service.SysLoginService;
 import org.apache.dubbo.config.annotation.DubboReference;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.Date;
 
 /**
  * @Description: TODO
@@ -35,8 +44,8 @@ public class SysLoginController extends BaseApiController {
     * @Return: com.youzi.common.api.ApiResult<com.youzi.modules.sys.vo.SysLoginVo>
     */
     @PostMapping("/login")
-    public ApiResult login(@Validated SysLoginQuery sysLoginQuery) {
-        validCaptcha(sysLoginQuery.getCaptcha()); //校验验证码
+    public ApiResult login(@Validated @RequestBody SysLoginQuery sysLoginQuery) {
+        //validCaptcha(sysLoginQuery.getCaptcha()); //校验验证码
         String loginName = sysLoginQuery.getLoginName();
         if(!sysLoginService.isLoginNameOrPhoneExisted(loginName)) {
             return ApiResult.badRequest().msg("登录名或手机号不存在");
@@ -45,8 +54,15 @@ public class SysLoginController extends BaseApiController {
         if(!StrUtil.equals(SecureUtil.md5(sysLoginQuery.getPassword()), sysUser.getPassword())) {
             return ApiResult.badRequest().msg("登录名或手机号或密码错误");
         }
-        session.setAttribute(SessionConstant.LOGIN_CODE, sysUser.getId());
-        return ApiResult.success().msg("登录成功").body(null);
+        String id = sysUser.getId().toString();
+        //生成jwt
+        String token = JWT.create()
+                .withJWTId(IdUtil.simpleUUID())
+                .withClaim("sysUser", JSON.toJSONString(sysUser))
+                .withAudience(id)
+                .withExpiresAt(DateUtil.offsetDay(new Date(), 1))
+                .sign(Algorithm.HMAC256(JwtConstant.SECRET+id));
+        return ApiResult.success().msg("登录成功").body(token);
     }
 
     /**
@@ -68,9 +84,10 @@ public class SysLoginController extends BaseApiController {
     * @Return: com.youzi.common.api.ApiResult
     */
     @RequestMapping("/isLogin")
-    public ApiResult isLogin() {
-        Integer userid = (Integer) session.getAttribute(SessionConstant.LOGIN_CODE);
-        return ApiResult.success().body(userid != null && userid != 0);
+    public ApiResult isLoginMapping() {
+        /*Integer userid = (Integer) session.getAttribute(SessionConstant.LOGIN_CODE);
+        return ApiResult.success().body(userid != null && userid != 0);*/
+        return ApiResult.success().body(isLogin());
     }
 
 }

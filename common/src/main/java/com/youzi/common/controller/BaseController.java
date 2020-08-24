@@ -1,6 +1,11 @@
 package com.youzi.common.controller;
 
+import cn.hutool.core.convert.Convert;
 import cn.hutool.core.util.StrUtil;
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.algorithms.Algorithm;
+import com.auth0.jwt.interfaces.DecodedJWT;
+import com.youzi.common.constant.JwtConstant;
 import com.youzi.common.constant.SessionConstant;
 import com.youzi.common.exception.CustomException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +15,7 @@ import org.springframework.context.ApplicationContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.util.Date;
 
 /**
  * @Description: 通用超类BaseController
@@ -28,6 +34,31 @@ public abstract class BaseController {
 
     @Value("${spring.profiles.active}")
     public String env;
+
+    /**
+     * @description: 判断是否登录
+     */
+    protected boolean isLogin(String token) {
+        try {
+            if(StrUtil.isNotBlank(token)) {
+                Integer userId = Convert.toInt(JWT.decode(token).getAudience().get(0));
+                if(userId != null && userId != 0) {
+                    DecodedJWT decodedJWT = JWT.require(Algorithm.HMAC256(JwtConstant.SECRET+userId)).build().verify(token);
+                    if(decodedJWT.getExpiresAt().after(new Date())) {
+                        return true;
+                    }
+                }
+            }
+        } catch (Exception e) {
+            //e.printStackTrace();
+        }
+        return false;
+    }
+
+    protected boolean isLogin() {
+        String token = request.getHeader("token");
+        return isLogin(token);
+    }
 
     protected void validCaptcha(String captcha) {
         if(StrUtil.isBlank(captcha)) {
