@@ -4,25 +4,27 @@ import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.crypto.SecureUtil;
-import com.alibaba.fastjson.JSON;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.youzi.common.api.ApiResult;
 import com.youzi.common.constant.DubboConstant;
-import com.youzi.common.constant.JwtConstant;
-import com.youzi.common.constant.SessionConstant;
-import com.youzi.common.controller.api.BaseApiController;
+import com.youzi.common.constant.RedisConstant;
+import com.youzi.modules.base.controller.BaseApiController;
 import com.youzi.modules.sys.entity.SysUser;
 import com.youzi.modules.sys.query.SysLoginQuery;
 import com.youzi.modules.sys.service.SysLoginService;
 import org.apache.dubbo.config.annotation.DubboReference;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.Cookie;
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @Description: TODO
@@ -35,6 +37,8 @@ public class SysLoginController extends BaseApiController {
 
     @DubboReference(version = DubboConstant.VERSION, group = DubboConstant.GROUP)
     private SysLoginService sysLoginService;
+    @Autowired
+    private StringRedisTemplate stringRedisTemplate;
 
     /**
     * @Description: 账号或手机号，密码，验证码登录
@@ -45,7 +49,7 @@ public class SysLoginController extends BaseApiController {
     */
     @PostMapping("/login")
     public ApiResult login(@Validated @RequestBody SysLoginQuery sysLoginQuery) {
-        //validCaptcha(sysLoginQuery.getCaptcha()); //校验验证码
+        validCaptcha(sysLoginQuery.getCaptcha()); //校验验证码
         String loginName = sysLoginQuery.getLoginName();
         if(!sysLoginService.isLoginNameOrPhoneExisted(loginName)) {
             return ApiResult.badRequest().msg("登录名或手机号不存在");
@@ -58,10 +62,14 @@ public class SysLoginController extends BaseApiController {
         //生成jwt
         String token = JWT.create()
                 .withJWTId(IdUtil.simpleUUID())
-                .withClaim("sysUser", JSON.toJSONString(sysUser))
                 .withAudience(id)
+                .withClaim("ip", getIPAddress(request))
                 .withExpiresAt(DateUtil.offsetDay(new Date(), 1))
-                .sign(Algorithm.HMAC256(JwtConstant.SECRET+id));
+                .sign(Algorithm.HMAC256(sysUser.getPassword()));
+        stringRedisTemplate.opsForValue().set(RedisConstant.TOKEN_KEY + id, token, 1, TimeUnit.DAYS);
+        Cookie cookie = new Cookie("token", token);
+        cookie.setPath("/");
+        response.addCookie(cookie);
         return ApiResult.success().msg("登录成功").body(token);
     }
 
@@ -73,7 +81,10 @@ public class SysLoginController extends BaseApiController {
     */
     @RequestMapping("/loginoff")
     public ApiResult loginoff() {
-        session.removeAttribute(SessionConstant.LOGIN_CODE);
+        Cookie cookie = new Cookie("token", null);
+        cookie.setPath("/");
+        cookie.setMaxAge(0);
+        response.addCookie(cookie);
         return ApiResult.success().msg("退出登录成功");
     }
 
@@ -85,8 +96,6 @@ public class SysLoginController extends BaseApiController {
     */
     @RequestMapping("/isLogin")
     public ApiResult isLoginMapping() {
-        /*Integer userid = (Integer) session.getAttribute(SessionConstant.LOGIN_CODE);
-        return ApiResult.success().body(userid != null && userid != 0);*/
         return ApiResult.success().body(isLogin());
     }
 

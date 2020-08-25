@@ -1,6 +1,6 @@
 package com.youzi.modules.example.controller;
 
-import com.youzi.common.controller.page.BasePageController;
+import com.youzi.modules.base.controller.BaseSysPageController;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
  */
 @Controller
 @RequestMapping("/example")
-public class ExamplePageController extends BasePageController {
+public class ExamplePageController extends BaseSysPageController {
 
     @RequestMapping("/list")
     public String list() {

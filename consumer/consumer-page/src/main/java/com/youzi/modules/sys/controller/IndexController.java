@@ -1,6 +1,6 @@
 package com.youzi.modules.sys.controller;
 
-import com.youzi.common.controller.page.BasePageController;
+import com.youzi.modules.base.controller.BaseSysPageController;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
  * @date: 2020年08月21日 16:19
  */
 @Controller
-public class IndexController extends BasePageController {
+public class IndexController extends BaseSysPageController {
 
     /**
      * @description: 主页

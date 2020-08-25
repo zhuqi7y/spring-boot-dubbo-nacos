@@ -70,6 +70,12 @@
 <script th:src="@{/lib/layui-v2.5.5/layui.js}" charset="utf-8"></script>
 <script th:src="@{/lib/jq-module/jquery.particleground.min.js}" charset="utf-8"></script>
 <script>
+    $.ajaxPrefilter(function( options, originalOptions, jqXHR ) {
+        options.xhrFields = {
+            withCredentials: true
+        }
+    });
+
     layui.use(['form'], function () {
         var form = layui.form,
             layer = layui.layer,
@@ -108,10 +114,11 @@
                 obj[field.name] = field.value;
             });
             $.ajax({
-                type: "post",
+                type: 'post',
                 url: '[[${apiPath}]]sysLogin/login',
                 dataType: 'json',
-                contentType: "application/json",
+                headers: {'captcha': $.cookie('captcha')},
+                contentType: 'application/json',
                 data:JSON.stringify(obj),
                 beforeSend: function() {
                     loadFlag = layer.load(0, {shade: [0.1,'#fff']});
@@ -126,7 +133,6 @@
                 success: function (d) {
                     if (d.code === 200 && d.body != '') {
                         layer.msg('登录成功', {icon: 1, time: 1000, shadeClose: true, end: function () {
-                                $.cookie('token', d.body, { expires: 7, path: '/' });
                                 window.location.href = '[[@{/sys/index}]]';
                             }});
                     } else {

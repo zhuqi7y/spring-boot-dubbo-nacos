@@ -4,6 +4,12 @@
     <script th:src="@{/lib/jquery-3.4.1/jquery-3.4.1.min.js}" charset="utf-8"></script>
     <script th:src="@{/js/jquery.cookie.min.js}"></script>
     <script>
+        $.ajaxPrefilter(function( options, originalOptions, jqXHR ) {
+            options.xhrFields = {
+                withCredentials: true
+            }
+        });
+
         $(function () {
             $.ajax({
                 type: 'post',

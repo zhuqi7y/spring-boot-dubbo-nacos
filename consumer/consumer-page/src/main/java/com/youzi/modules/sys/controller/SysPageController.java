@@ -1,6 +1,6 @@
 package com.youzi.modules.sys.controller;
 
-import com.youzi.common.controller.page.BasePageController;
+import com.youzi.modules.base.controller.BaseSysPageController;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
  */
 @Controller
 @RequestMapping("/sys")
-public class SysPageController extends BasePageController {
+public class SysPageController extends BaseSysPageController {
 
     /**
      * @description: 首页

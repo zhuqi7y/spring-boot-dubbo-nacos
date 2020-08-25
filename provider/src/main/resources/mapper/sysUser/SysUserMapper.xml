@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.youzi.modules.sys.mapper.SysUserMapper">
+
+  <resultMap id="sysUserMap" type="com.youzi.modules.sys.entity.SysUser">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="login_name" jdbcType="VARCHAR" property="loginName" />
+    <result column="password" jdbcType="VARCHAR" property="password" />
+    <result column="real_password" jdbcType="VARCHAR" property="realPassword" />
+    <result column="user_name" jdbcType="VARCHAR" property="userName" />
+    <result column="phone" jdbcType="VARCHAR" property="phone" />
+    <result column="last_login_time" jdbcType="TIMESTAMP" property="lastLoginTime" />
+    <result column="add_time" jdbcType="TIMESTAMP" property="addTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="delete_time" jdbcType="TIMESTAMP" property="deleteTime" />
+    <result column="enabled" jdbcType="BIT" property="enabled" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="orderby" jdbcType="INTEGER" property="orderby" />
+  </resultMap>
+
+  <select id="existById" parameterType="integer" resultType="boolean">
+    select ifnull((select 1 from sys_user where enabled = 1 and id = #{id} limit 1), 0)
+  </select>
+
+  <select id="selectById" parameterType="integer" resultMap="sysUserMap">
+    select id, login_name, password, user_name, phone, last_login_time, add_time, update_time
+    from sys_user
+    where enabled = 1
+    and id = #{id}
+  </select>
+
+</mapper>

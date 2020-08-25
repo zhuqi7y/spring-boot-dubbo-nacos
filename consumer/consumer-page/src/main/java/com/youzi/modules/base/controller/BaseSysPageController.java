@@ -1,4 +1,4 @@
-package com.youzi.common.controller.page;
+package com.youzi.modules.base.controller;
 
 import cn.hutool.core.util.StrUtil;
 import com.youzi.common.constant.ApiConstant;
@@ -7,11 +7,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 
 /**
- * @Description: 通用page超类BasePageController
+ * @Description: TODO
  * @author: zhuqi
- * @date: 2020年07月22日 14:57
+ * @date: 2020年08月25日 10:23
  */
-public abstract class BasePageController extends BaseController {
+public abstract class BaseSysPageController extends BaseController {
 
     @ModelAttribute
     public void setCommonModel(Model model) {
@@ -19,5 +19,6 @@ public abstract class BasePageController extends BaseController {
             model.addAttribute("apiPath", ApiConstant.API_DEV_PATH);
         }
     }
+
 
 }

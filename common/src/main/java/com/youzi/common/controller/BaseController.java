@@ -1,13 +1,5 @@
 package com.youzi.common.controller;
 
-import cn.hutool.core.convert.Convert;
-import cn.hutool.core.util.StrUtil;
-import com.auth0.jwt.JWT;
-import com.auth0.jwt.algorithms.Algorithm;
-import com.auth0.jwt.interfaces.DecodedJWT;
-import com.youzi.common.constant.JwtConstant;
-import com.youzi.common.constant.SessionConstant;
-import com.youzi.common.exception.CustomException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
@@ -15,7 +7,6 @@ import org.springframework.context.ApplicationContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.util.Date;
 
 /**
  * @Description: 通用超类BaseController
@@ -35,44 +26,38 @@ public abstract class BaseController {
     @Value("${spring.profiles.active}")
     public String env;
 
-    /**
-     * @description: 判断是否登录
-     */
-    protected boolean isLogin(String token) {
-        try {
-            if(StrUtil.isNotBlank(token)) {
-                Integer userId = Convert.toInt(JWT.decode(token).getAudience().get(0));
-                if(userId != null && userId != 0) {
-                    DecodedJWT decodedJWT = JWT.require(Algorithm.HMAC256(JwtConstant.SECRET+userId)).build().verify(token);
-                    if(decodedJWT.getExpiresAt().after(new Date())) {
-                        return true;
-                    }
-                }
-            }
-        } catch (Exception e) {
-            //e.printStackTrace();
-        }
-        return false;
-    }
+    public static String getIPAddress(HttpServletRequest request) {
+        String ip = null;
 
-    protected boolean isLogin() {
-        String token = request.getHeader("token");
-        return isLogin(token);
-    }
+        //X-Forwarded-For：Squid 服务代理
+        String ipAddresses = request.getHeader("X-Forwarded-For");
+        if (ipAddresses == null || ipAddresses.length() == 0 || "unknown".equalsIgnoreCase(ipAddresses)) {
+            //Proxy-Client-IP：apache 服务代理
+            ipAddresses = request.getHeader("Proxy-Client-IP");
+        }
+        if (ipAddresses == null || ipAddresses.length() == 0 || "unknown".equalsIgnoreCase(ipAddresses)) {
+            //WL-Proxy-Client-IP：weblogic 服务代理
+            ipAddresses = request.getHeader("WL-Proxy-Client-IP");
+        }
+        if (ipAddresses == null || ipAddresses.length() == 0 || "unknown".equalsIgnoreCase(ipAddresses)) {
+            //HTTP_CLIENT_IP：有些代理服务器
+            ipAddresses = request.getHeader("HTTP_CLIENT_IP");
+        }
+        if (ipAddresses == null || ipAddresses.length() == 0 || "unknown".equalsIgnoreCase(ipAddresses)) {
+            //X-Real-IP：nginx服务代理
+            ipAddresses = request.getHeader("X-Real-IP");
+        }
 
-    protected void validCaptcha(String captcha) {
-        if(StrUtil.isBlank(captcha)) {
-            CustomException.badRequest("验证码不能为空");
+        //有些网络通过多层代理，那么获取到的ip就会有多个，一般都是通过逗号（,）分割开来，并且第一个ip为客户端的真实IP
+        if (ipAddresses != null && ipAddresses.length() != 0) {
+            ip = ipAddresses.split(",")[0];
         }
-        String captchaSes = (String) session.getAttribute(SessionConstant.CAPTCHA);
-        if(StrUtil.isBlank(captchaSes)) {
-            CustomException.badRequest("验证码过期");
+
+        //还是不能获取到，最后再通过request.getRemoteAddr();获取
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ipAddresses)) {
+            ip = request.getRemoteAddr();
         }
-        if(!captcha.toLowerCase().equals(captchaSes.toLowerCase())) {
-            session.removeAttribute(SessionConstant.CAPTCHA);
-            CustomException.badRequest("验证码错误");
-        }
-        session.removeAttribute(SessionConstant.CAPTCHA);
+        return ip.equals("0:0:0:0:0:0:0:1")?"127.0.0.1":ip;
     }
 
 }

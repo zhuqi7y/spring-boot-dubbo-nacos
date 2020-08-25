@@ -166,6 +166,8 @@
                 type: "post",
                 url: '[[${apiPath}]]sysLogin/loginoff',
                 dataType: 'json',
+                xhrFields: {withCredentials: true},
+                crossDomain: true,
                 beforeSend: function() {
                     loadFlag = layer.load(0, {shade: [0.1,'#fff']});
                 },
@@ -178,7 +180,7 @@
                 success: function (d) {
                     if (d.code === 200) {
                         layer.alert('退出登录成功', {icon: 1, closeBtn: 0}, function () {
-                            window.location.href = '[[@{/login}]]';
+                            window.location.href = '[[@{/sys/login}]]';
                         });
                     } else {
                         layer.alert(d.msg, {icon: 2});
