@@ -5,6 +5,7 @@ import com.github.pagehelper.PageInfo;
 import com.youzi.common.api.ApiResult;
 import com.youzi.common.constant.DubboConstant;
 import com.youzi.common.query.DeleteQuery;
+import com.youzi.common.query.DetailQuery;
 import com.youzi.modules.base.controller.BaseSysApiController;
 import com.youzi.modules.example.entity.Example;
 import com.youzi.modules.example.query.ExampleQuery;
@@ -16,8 +17,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import javax.validation.constraints.NotNull;
 
 /**
  * @Description: TODO
@@ -40,6 +39,9 @@ public class ExampleApiController extends BaseSysApiController {
 
     @PostMapping("/update")
     public ApiResult update(@Validated @RequestBody Example example) {
+        if(example.getId() == null || example.getId() == 0) {
+            return ApiResult.badRequest().msg("id不能为空");
+        }
         int row = exampleService.update(example);
         return row > 0 ? ApiResult.success().msg("更新成功") : ApiResult.fail().msg("更新失败");
     }
@@ -48,12 +50,15 @@ public class ExampleApiController extends BaseSysApiController {
     public ApiResult delete(@Validated @RequestBody DeleteQuery deleteQuery) {
         deleteQuery.setDeleteSysUserid(getSysUserid());
         int row = exampleService.delete(deleteQuery);
-        return row > 0 ? ApiResult.success().msg("更新成功") : ApiResult.fail().msg("更新失败");
+        return row > 0 ? ApiResult.success().msg("删除成功") : ApiResult.fail().msg("删除失败");
     }
 
     @RequestMapping("/detail")
-    public ApiResult detail(@NotNull @RequestBody Integer id) {
-        ExampleVo exampleVo = exampleService.selectById(id);
+    public ApiResult detail(@Validated @RequestBody DetailQuery detailQuery) {
+        if(!exampleService.existById(detailQuery.getId())) {
+            return ApiResult.badRequest().msg("记录不存在");
+        }
+        ExampleVo exampleVo = exampleService.selectById(detailQuery.getId());
         return ApiResult.success().msg("获取详情成功").body(exampleVo);
     }
 

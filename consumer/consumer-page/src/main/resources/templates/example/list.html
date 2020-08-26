@@ -6,9 +6,10 @@
     <meta name="renderer" content="webkit">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <link rel="icon" th:href="@{/images/favicon.ico}">
-    <link rel="stylesheet" th:href="@{/lib/layui-v2.5.5/css/layui.css}" media="all">
-    <link rel="stylesheet" th:href="@{/css/public.css}" media="all">
+    <base th:href="@{/}">
+    <link rel="icon" href="images/favicon.ico">
+    <link rel="stylesheet" href="lib/layui-v2.5.5/css/layui.css" media="all">
+    <link rel="stylesheet" href="css/public.css" media="all">
 </head>
 <body>
 <div class="layuimini-container">
@@ -50,7 +51,7 @@
     </div>
 </div>
 <div th:replace="common/footer_sys :: foot"></div>
-<script th:src="@{/lib/layui-v2.5.5/layui.js}" charset="utf-8"></script>
+<script src="lib/layui-v2.5.5/layui.js" charset="utf-8"></script>
 <script th:inline="javascript">
     layui.use(['form', 'table', 'layer'], function () {
         var $ = layui.jquery,
@@ -85,6 +86,11 @@
             response: {
                 statusCode: 200 //规定成功的状态码，默认：0
             },
+            done: function(res, curr, count){
+                if(res.code === 401) {
+                    top.location.href = 'sys/login';
+                }
+            },
             cols: [
                 [
                     {type: "checkbox", width: 50},
@@ -108,7 +114,7 @@
                 ]
             ],
             limits: [10, 15, 20, 25, 50, 100],
-            limit: 15,
+            limit: 10,
             page: true,
             skin: 'line'
         });
@@ -134,68 +140,83 @@
         table.on('toolbar(currentTableFilter)', function (obj) {
             if (obj.event === 'add') {  // 监听添加操作
                 var index = layer.open({
-                    title: '添加用户',
+                    title: '添加',
                     type: 2,
                     shade: 0.2,
-                    maxmin:true,
                     shadeClose: true,
-                    area: ['50%', '50%'],
-                    content: '[[@{/example/add}]]',
+                    area: ['40%', '50%'],
+                    /*btn: ['确定', '取消'],
+                    yes: function (index, layero) {
+                        //点击确认触发 iframe 内容中的按钮提交
+                        var submit = layero.find('iframe').contents().find('#exampleAddId');
+                        submit.click();
+                    },*/
+                    content: 'example/add'
                 });
-                $(window).on("resize", function () {
+                /*$(window).on('resize', function () {
                     layer.full(index);
-                });
+                });*/
             } else if (obj.event === 'delete') {  // 监听删除操作
                 var checkStatus = table.checkStatus('currentTableId')
                     , data = checkStatus.data;
-                layer.alert(JSON.stringify(data));
+                if(data.length == 0 || $.isEmptyObject(data)) {
+                    layer.msg('请先选择要删除的信息', {icon: 2, time: 1000, shadeClose: true});
+                } else {
+                    layer.confirm('确定要删除吗？', function (index) {
+                        var ids = '';
+                        data.forEach(function (item, index) {
+                            ids += index == 0 ? item.id : ',' + item.id;
+                        });
+                        delExample(ids);
+                        layer.close(index);
+                    });
+                }
             }
         });
 
         //监听表格复选框选择
         table.on('checkbox(currentTableFilter)', function (obj) {
-            console.log(obj)
+            //console.log(obj)
         });
 
         table.on('tool(currentTableFilter)', function (obj) {
             var data = obj.data;
             if (obj.event === 'edit') {
                 var index = layer.open({
-                    title: '编辑用户',
+                    title: '修改',
                     type: 2,
                     shade: 0.2,
-                    maxmin:true,
+                    //maxmin:true,
                     shadeClose: true,
-                    area: ['50%', '50%'],
-                    content: '[[@{/example/update}]]',
+                    area: ['40%', '50%'],
+                    content: 'example/update?id='+data.id,
                 });
-                $(window).on("resize", function () {
+                /*$(window).on("resize", function () {
                     layer.full(index);
-                });
+                });*/
                 return false;
             } else if (obj.event === 'delete') {
-                alert(obj.id);
-                layer.confirm('真的删除行么', function (index) {
-                    obj.del();
+                layer.confirm('确定要删除吗？', function (index) {
+                    delExample(data.id);
+                    //obj.del();
                     layer.close(index);
                 });
             }
         });
 
-        function delExample() {
+        function delExample(id) {
+            var loadFlag;
             $.ajax({
-                type: "post",
-                url: '[[${apiPath}]]example/delete',
+                type: 'post',
+                url: [[${apiPath}]]+'example/delete',
                 dataType: 'json',
-                contentType: "application/json",
-                data:JSON.stringify({ids: 1}),
-                xhrFields: {withCredentials: true},
-                crossDomain: true,
+                contentType: 'application/json',
+                headers: {'token': $.cookie('token')},
+                data:JSON.stringify({ids: id}),
                 beforeSend: function() {
                     loadFlag = layer.load(0, {shade: [0.1,'#fff']});
                 },
                 complete: function() {
-                    refreshCaptcha();
                     layer.close(loadFlag);
                 },
                 error: function() {
@@ -203,9 +224,10 @@
                 },
                 success: function (d) {
                     if (d.code === 200) {
-                        layer.msg('登录成功', {icon: 1, time: 1000, shadeClose: true, end: function () {
-                                window.location.href = '[[@{/sys/index}]]';
-                            }});
+                        layui.table.reload('currentTableId', {page: {curr: 1}, where: {title: ''}});
+                        layer.msg('删除成功', {icon: 1, time: 1000, shadeClose: true});
+                    } else if(d.code === 401) {
+                        top.location.href = 'sys/login';
                     } else {
                         layer.alert(d.msg, {icon: 2});
                     }

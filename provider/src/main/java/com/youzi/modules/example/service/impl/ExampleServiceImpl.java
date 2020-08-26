@@ -99,4 +99,17 @@ public class ExampleServiceImpl implements ExampleService {
         List<ExampleVo> list = exampleMapper.selectPage(exampleQuery);
         return new PageInfo<>(list);
     }
+
+    /**
+    * @Description: 判断id记录是否存在
+    * @author: zhuqi
+    * @date: 2020/8/26 14:52
+    * @param id:
+    * @Return: boolean
+    */
+    @Override
+    public boolean existById(Integer id) {
+        return id != null && id != 0 ? exampleMapper.existById(id) : false;
+    }
+
 }

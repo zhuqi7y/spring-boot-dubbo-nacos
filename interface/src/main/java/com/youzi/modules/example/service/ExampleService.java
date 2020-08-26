@@ -69,4 +69,13 @@ public interface ExampleService {
     */
     PageInfo<ExampleVo> selectPage(ExampleQuery exampleQuery);
 
+    /**
+     * @Description: 判断id记录是否存在
+     * @author: zhuqi
+     * @date: 2020/8/26 14:52
+     * @param id:
+     * @Return: boolean
+     */
+    boolean existById(Integer id);
+
 }

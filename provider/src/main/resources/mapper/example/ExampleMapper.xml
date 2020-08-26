@@ -3,13 +3,13 @@
 <mapper namespace="com.youzi.modules.example.mapper.ExampleMapper">
 
   <insert id="add" parameterType="com.youzi.modules.example.entity.Example">
-    insert into example(title, type, content, addTime, remark, orderby)
-    values(#{title}, #{type}, #{content}, #{addTime}, #{remark}, #{orderby})
+    insert into example(title, type, content, remark, orderby)
+    values(#{title}, #{type}, #{content}, #{remark}, #{orderby})
   </insert>
 
   <insert id="addAndGetId" parameterType="com.youzi.modules.example.entity.Example" useGeneratedKeys="true" keyProperty="id">
-    insert into example(title, type, content, addTime, remark, orderby)
-    values(#{title}, #{type}, #{content}, #{addTime}, #{remark}, #{orderby})
+    insert into example(title, type, content, remark, orderby)
+    values(#{title}, #{type}, #{content}, #{remark}, #{orderby})
   </insert>
 
   <update id="update" parameterType="com.youzi.modules.example.entity.Example">
@@ -60,7 +60,7 @@
     <if test="type != null and type != 0">
       and type = #{type}
     </if>
-    order by orderby, id desc
+    order by id desc
   </select>
 
   <select id="existById" parameterType="integer" resultType="boolean">

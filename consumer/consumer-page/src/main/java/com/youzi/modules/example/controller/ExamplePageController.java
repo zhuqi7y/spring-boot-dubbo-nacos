@@ -18,4 +18,14 @@ public class ExamplePageController extends BaseSysPageController {
         return "example/list";
     }
 
+    @RequestMapping("/add")
+    public String add() {
+        return "example/add";
+    }
+
+    @RequestMapping("/update")
+    public String update() {
+        return "example/update";
+    }
+
 }
