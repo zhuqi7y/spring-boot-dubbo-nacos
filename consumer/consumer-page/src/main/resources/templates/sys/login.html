@@ -9,6 +9,7 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="format-detection" content="telephone=no">
+    <base th:href="@{/}">
     <link rel="icon" th:href="@{/images/favicon.ico}">
     <link rel="stylesheet" th:href="@{/lib/layui-v2.5.5/css/layui.css}" media="all">
     <!--[if lt IE 9]>
@@ -52,7 +53,7 @@
                     <label class="layui-icon layui-icon-vercode" for="captcha"></label>
                     <input type="text" name="captcha" lay-verify="required" placeholder="图形验证码" autocomplete="off" class="layui-input verification captcha" value="">
                     <div class="captcha-img">
-                        <img id="captchaPic" th:src="${apiPath}+'captcha'" onclick="refreshCaptcha();">
+                        <img id="captchaPic" src="captcha" onclick="refreshCaptcha();">
                     </div>
                 </div>
                 <div class="layui-form-item">
@@ -124,7 +125,6 @@
                     loadFlag = layer.load(0, {shade: [0.1,'#fff']});
                 },
                 complete: function() {
-                    refreshCaptcha();
                     layer.close(loadFlag);
                 },
                 error: function() {
@@ -132,9 +132,18 @@
                 },
                 success: function (d) {
                     if (d.code === 200 && d.body != '') {
-                        layer.msg('登录成功', {icon: 1, time: 1000, shadeClose: true, end: function () {
-                                window.location.href = '[[@{/sys/index}]]';
-                            }});
+                        var script = document.createElement('script');
+                        script.setAttribute('src', 'https://my.page1.com/page/cross/page1?token='+d.body);
+                        document.getElementsByTagName('head')[0].appendChild(script);
+                        script = document.createElement('script');
+                        script.setAttribute('src', 'https://my.page2.com/page/cross/page2?token='+d.body);
+                        document.getElementsByTagName('head')[0].appendChild(script);
+                        script = document.createElement('script');
+                        script.setAttribute('src', 'https://my.page3.com/page/cross/page3?token='+d.body);
+                        document.getElementsByTagName('head')[0].appendChild(script);
+                        layer.msg('登录成功', {icon: 1, time: 500, shadeClose: true, end: function () {
+                            window.location.href = '[[@{/sys/index}]]';
+                        }});
                     } else {
                         layer.alert(d.msg, {icon: 2});
                     }
@@ -145,7 +154,7 @@
     });
 
     function refreshCaptcha() {
-        $('#captchaPic').attr('src', '[[${apiPath}]]captcha?'+Math.random());
+        $('#captchaPic').attr('src', 'captcha?'+Math.random());
     }
 </script>
 </body>

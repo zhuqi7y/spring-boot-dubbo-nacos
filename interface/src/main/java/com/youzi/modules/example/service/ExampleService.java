@@ -5,14 +5,12 @@ import com.youzi.common.query.DeleteQuery;
 import com.youzi.modules.example.entity.Example;
 import com.youzi.modules.example.query.ExampleQuery;
 import com.youzi.modules.example.vo.ExampleVo;
-import org.apache.dubbo.config.annotation.DubboService;
 
 /**
  * @Description: 实例对象服务
  * @author: zhuqi
  * @date: 2020年07月22日 10:48
  */
-@DubboService
 public interface ExampleService {
 
     /**

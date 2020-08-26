@@ -111,7 +111,7 @@
                 success: function (d) {
                     if (d.code === 200) {
                         layer.msg('登录成功', {icon: 1, time: 1000, shadeClose: true, end: function () {
-                                window.location.href = 'sys/index';
+                                top.location.href = 'sys/index';
                             }});
                     } else {
                         layer.alert(d.msg, {icon: 2});

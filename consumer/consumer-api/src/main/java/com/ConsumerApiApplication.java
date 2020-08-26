@@ -4,9 +4,7 @@ import com.alibaba.nacos.spring.context.annotation.config.NacosPropertySource;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
-import org.springframework.boot.web.servlet.ServletComponentScan;
 
-@ServletComponentScan
 @SpringBootApplication(exclude = {DataSourceAutoConfiguration.class})
 @NacosPropertySource(dataId = "${spring.application.name}", autoRefreshed = true)
 public class ConsumerApiApplication /*extends SpringBootServletInitializer*/ {

@@ -1,6 +1,7 @@
 package com.youzi.common.query;
 
 import java.io.Serializable;
+import java.util.Optional;
 
 /**
  * @Description: 通用分页查询层
@@ -10,9 +11,10 @@ import java.io.Serializable;
 public class PageQuery implements Serializable {
     private Integer pageNum;
     private Integer pageSize;
+    private boolean pageSizeZero = false;
 
     public Integer getPageNum() {
-        return pageNum;
+        return Optional.ofNullable(pageNum).orElse(1);
     }
 
     public void setPageNum(Integer pageNum) {
@@ -20,10 +22,19 @@ public class PageQuery implements Serializable {
     }
 
     public Integer getPageSize() {
-        return pageSize;
+        //设置默认值10和最大值200
+        return Optional.ofNullable(pageSize).map(ps -> ps > 200 ? 200 : ps).orElse(10);
     }
 
     public void setPageSize(Integer pageSize) {
         this.pageSize = pageSize;
+    }
+
+    public boolean isPageSizeZero() {
+        return pageSizeZero;
+    }
+
+    public void setPageSizeZero(boolean pageSizeZero) {
+        this.pageSizeZero = pageSizeZero;
     }
 }

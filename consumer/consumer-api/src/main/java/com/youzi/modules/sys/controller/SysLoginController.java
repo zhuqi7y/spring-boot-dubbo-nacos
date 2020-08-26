@@ -68,6 +68,7 @@ public class SysLoginController extends BaseApiController {
                 .sign(Algorithm.HMAC256(sysUser.getPassword()));
         stringRedisTemplate.opsForValue().set(RedisConstant.TOKEN_KEY + id, token, 1, TimeUnit.DAYS);
         Cookie cookie = new Cookie("token", token);
+        cookie.setDomain("api.com");
         cookie.setPath("/");
         response.addCookie(cookie);
         return ApiResult.success().msg("登录成功").body(token);
@@ -82,9 +83,11 @@ public class SysLoginController extends BaseApiController {
     @RequestMapping("/loginoff")
     public ApiResult loginoff() {
         Cookie cookie = new Cookie("token", null);
+        cookie.setDomain("api.com");
         cookie.setPath("/");
         cookie.setMaxAge(0);
         response.addCookie(cookie);
+        stringRedisTemplate.delete(RedisConstant.TOKEN_KEY + getSysUserid());
         return ApiResult.success().msg("退出登录成功");
     }
 

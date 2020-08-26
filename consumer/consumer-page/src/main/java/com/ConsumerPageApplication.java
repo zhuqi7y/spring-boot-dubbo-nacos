@@ -1,11 +1,14 @@
 package com;
 
-import org.apache.dubbo.spring.boot.autoconfigure.DubboAutoConfiguration;
+import com.alibaba.nacos.spring.context.annotation.config.NacosPropertySource;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
+import org.springframework.boot.web.servlet.ServletComponentScan;
 
-@SpringBootApplication(exclude = {DataSourceAutoConfiguration.class, DubboAutoConfiguration.class})
+@ServletComponentScan
+@NacosPropertySource(dataId = "${spring.application.name}", autoRefreshed = true)
+@SpringBootApplication(exclude = {DataSourceAutoConfiguration.class})
 public class ConsumerPageApplication /*extends SpringBootServletInitializer*/ {
 
     public static void main(String[] args) {

@@ -180,7 +180,7 @@
                 success: function (d) {
                     if (d.code === 200) {
                         layer.alert('退出登录成功', {icon: 1, closeBtn: 0}, function () {
-                            window.location.href = '[[@{/sys/login}]]';
+                            top.location.href = '[[@{/sys/login}]]';
                         });
                     } else {
                         layer.alert(d.msg, {icon: 2});
