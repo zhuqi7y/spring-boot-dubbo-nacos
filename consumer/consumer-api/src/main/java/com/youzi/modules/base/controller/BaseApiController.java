@@ -13,8 +13,6 @@ import org.apache.dubbo.config.annotation.DubboReference;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 
-import java.util.concurrent.TimeUnit;
-
 /**
  * @Description: TODO
  * @author: zhuqi
@@ -40,11 +38,7 @@ public abstract class BaseApiController extends BaseController {
                     String key = RedisConstant.TOKEN_KEY + userId.toString();
                     //校验redis里的token
                     if(stringRedisTemplate.hasKey(key)) {
-                        String value = stringRedisTemplate.opsForValue().get(key);
-                        if(StrUtil.equals(value, token)) {
-                            stringRedisTemplate.expire(key, 1, TimeUnit.DAYS);
-                            return true;
-                        }
+                        return StrUtil.equals(stringRedisTemplate.opsForValue().get(key), token);
                     }
                 }
             }

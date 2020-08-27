@@ -72,7 +72,7 @@ public class SysLoginController extends BaseApiController {
                 .withClaim("ip", getIPAddress(request))
                 .withExpiresAt(DateUtil.offsetDay(new Date(), 1))
                 .sign(Algorithm.HMAC256(sysUser.getPassword()));
-        stringRedisTemplate.opsForValue().set(RedisConstant.TOKEN_KEY + id, token, 1, TimeUnit.DAYS);
+        stringRedisTemplate.opsForValue().set(RedisConstant.TOKEN_KEY + id, token, 7, TimeUnit.DAYS);
         Cookie cookie = new Cookie("token", token);
         cookie.setPath("/");
         response.addCookie(cookie);
