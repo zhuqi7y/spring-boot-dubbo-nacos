@@ -1,0 +1,39 @@
+1.windows电脑目录C:/Windows/System32/drivers/etc目录下hosts文件添加一行：
+127.0.0.1 my.api.com my.page1.com my.page2.com my.page3.com
+
+2.启动nacos，打开地址http://localhost:8848/nacos，
+左边菜单选择：配置管理-配置，右侧页面左上角点击dev空间，
+找到Data Id为consumer-page和Group为DEFAULT_GROUP，点击编辑，
+第16行改为api.path=https://my.api.com/api/
+
+3.安装openssl，下载Win64OpenSSL-1_1_1g.exe，网盘下载或者链接：http://slproweb.com/products/Win32OpenSSL.html
+安装完成添加系统环境变量OPENSSL_HOME：C:\OpenSSL-Win64，path添加%OPENSSL_HOME%\bin
+编辑C:\OpenSSL-Win64\bin\cnf目录下的openssl.cnf文件
+搜索req_extensions = v3_req，去掉这一行第一个#注释
+搜索[ v3_req ]后面添加：
+subjectAltName = @alt_names
+[ alt_names ]
+DNS.1 = my.api.com
+DNS.2 = my.page1.com
+DNS.3 = my.page2.com
+DNS.4 = my.page3.com
+
+4.下载nginx-1.18.0.zip，解压到D:\nginx-1.18.0
+
+5.cmd进入D:\nginx-1.18.0\conf
+
+openssl genrsa -des3 -out server.key
+设置密码
+
+openssl req -new -key server.key -out server.csr
+（countname填CN，其他随便填或回车，注意common_name填域名my.api.com）
+
+拷贝server.key并重命名为server.key.org
+
+openssl x509 -req -days 365 -in server.csr -signkey server.key -out server.crt
+
+6.D:\nginx-1.18.0\conf目录下的nginx.conf文件参考配置覆盖，nginx启动或nginx.exe -s reload重启
+
+7.打开https://my.page1.com/page/sys/login登录以后，
+打开https://my.page2.com/page/sys/index和https://my.page3.com/page/sys/index发现都已经登录了
+（谷歌浏览器会显示证书无效无法访问页面，先打开三个地址，左上角地址左边红色感叹号点击设置允许打开就可以了）

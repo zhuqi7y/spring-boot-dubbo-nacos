@@ -1,0 +1,6 @@
+windows版redis下载，网盘下载或者链接：https://github.com/tporadowski/redis/releases
+1.运行Redis-x64-5.0.9.msi安装
+2.配置redis密码，记事本打开C:\Program Files\Redis\redis.windows.conf和redis.windows-service.conf文件
+搜索requirepass那一行改为：requirepass 123456
+3.redis免费开源可视化管理工具AnotherRedisDesktopManager
+网盘下载或者链接：https://github.com/qishibo/AnotherRedisDesktopManager/releases

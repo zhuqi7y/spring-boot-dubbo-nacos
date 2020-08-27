@@ -70,7 +70,7 @@ public class ApiResult {
     }
 
     public <T> ApiResult page(PageInfo<T> pageInfo) {
-        ApiPage apiPage = new ApiPage();
+        ApiPage<T> apiPage = new ApiPage<>();
         apiPage.setPageNum(pageInfo.getPageNum());
         apiPage.setPageSize(pageInfo.getPageSize());
         apiPage.setPages(pageInfo.getPages());
