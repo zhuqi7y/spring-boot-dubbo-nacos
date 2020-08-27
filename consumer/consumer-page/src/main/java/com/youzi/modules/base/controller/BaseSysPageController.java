@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
  */
 public abstract class BaseSysPageController extends BaseController {
 
-    @NacosValue("${api.path}")
+    @NacosValue(value = "${api.path}", autoRefreshed = true)
     private String apiPath;
 
     @ModelAttribute

@@ -38,7 +38,7 @@ import java.util.concurrent.TimeUnit;
 @RequestMapping("/sysLogin")
 public class SysLoginController extends BaseApiController {
 
-    @NacosValue("${page.domains}")
+    @NacosValue(value = "${page.domains}", autoRefreshed = true)
     private List<String> pageDomains;
 
     @DubboReference(version = DubboConstant.VERSION, group = DubboConstant.GROUP)
