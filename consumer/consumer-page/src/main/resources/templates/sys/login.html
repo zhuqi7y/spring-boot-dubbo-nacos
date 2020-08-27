@@ -132,15 +132,13 @@
                 },
                 success: function (d) {
                     if (d.code === 200 && d.body != '') {
-                        var script = document.createElement('script');
-                        script.setAttribute('src', 'https://my.page1.com/page/cross/page1?token='+d.body);
-                        document.getElementsByTagName('head')[0].appendChild(script);
-                        script = document.createElement('script');
-                        script.setAttribute('src', 'https://my.page2.com/page/cross/page2?token='+d.body);
-                        document.getElementsByTagName('head')[0].appendChild(script);
-                        script = document.createElement('script');
-                        script.setAttribute('src', 'https://my.page3.com/page/cross/page3?token='+d.body);
-                        document.getElementsByTagName('head')[0].appendChild(script);
+                        if(!$.isEmptyObject(d.body.pageDomains) && d.body.pageDomains.length > 0) {
+                            d.body.pageDomains.forEach(function (item, index) {
+                                var script = document.createElement('script');
+                                script.setAttribute('src', item + '?token='+d.body.token);
+                                document.getElementsByTagName('head')[0].appendChild(script);
+                            });
+                        }
                         layer.msg('登录成功', {icon: 1, time: 500, shadeClose: true, end: function () {
                             window.location.href = '[[@{/sys/index}]]';
                         }});

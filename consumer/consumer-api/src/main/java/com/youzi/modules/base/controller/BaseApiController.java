@@ -54,14 +54,23 @@ public abstract class BaseApiController extends BaseController {
         return false;
     }
 
+    private String getToken() {
+        return request.getHeader("token");
+    }
+
     protected boolean isLogin() {
-        String token = request.getHeader("token");
-        return isLogin(token);
+        return isLogin(getToken());
     }
 
     protected Integer getSysUserid() {
-        String token = request.getHeader("token");
-        return Convert.toInt(JWT.decode(token).getAudience().get(0), 0);
+        try {
+            if(StrUtil.isNotBlank(getToken())) {
+                return Convert.toInt(JWT.decode(getToken()).getAudience().get(0), 0);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
     }
 
     protected void validCaptcha(String captcha) {

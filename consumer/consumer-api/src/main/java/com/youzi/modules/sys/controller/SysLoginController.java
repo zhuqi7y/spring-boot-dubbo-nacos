@@ -1,9 +1,11 @@
 package com.youzi.modules.sys.controller;
 
 import cn.hutool.core.date.DateUtil;
+import cn.hutool.core.map.MapUtil;
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.crypto.SecureUtil;
+import com.alibaba.nacos.api.config.annotation.NacosValue;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.youzi.common.api.ApiResult;
@@ -24,6 +26,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.Cookie;
 import java.util.Date;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -34,6 +37,9 @@ import java.util.concurrent.TimeUnit;
 @RestController
 @RequestMapping("/sysLogin")
 public class SysLoginController extends BaseApiController {
+
+    @NacosValue("${page.domains}")
+    private List<String> pageDomains;
 
     @DubboReference(version = DubboConstant.VERSION, group = DubboConstant.GROUP)
     private SysLoginService sysLoginService;
@@ -68,10 +74,9 @@ public class SysLoginController extends BaseApiController {
                 .sign(Algorithm.HMAC256(sysUser.getPassword()));
         stringRedisTemplate.opsForValue().set(RedisConstant.TOKEN_KEY + id, token, 1, TimeUnit.DAYS);
         Cookie cookie = new Cookie("token", token);
-        cookie.setDomain("api.com");
         cookie.setPath("/");
         response.addCookie(cookie);
-        return ApiResult.success().msg("登录成功").body(token);
+        return ApiResult.success().msg("登录成功").body(MapUtil.builder().put("token", token).put("pageDomains", pageDomains).build());
     }
 
     /**
@@ -82,13 +87,16 @@ public class SysLoginController extends BaseApiController {
     */
     @RequestMapping("/loginoff")
     public ApiResult loginoff() {
-        Cookie cookie = new Cookie("token", null);
-        cookie.setDomain("api.com");
-        cookie.setPath("/");
-        cookie.setMaxAge(0);
-        response.addCookie(cookie);
-        stringRedisTemplate.delete(RedisConstant.TOKEN_KEY + getSysUserid());
-        return ApiResult.success().msg("退出登录成功");
+        Integer userid = getSysUserid();
+        if(userid != null && userid != 0) {
+            stringRedisTemplate.delete(RedisConstant.TOKEN_KEY + userid);
+            Cookie cookie = new Cookie("token", null);
+            cookie.setPath("/");
+            cookie.setMaxAge(0);
+            response.addCookie(cookie);
+            return ApiResult.success().msg("退出登录成功");
+        }
+        return ApiResult.badRequest().msg("退出登录失败");
     }
 
     /**

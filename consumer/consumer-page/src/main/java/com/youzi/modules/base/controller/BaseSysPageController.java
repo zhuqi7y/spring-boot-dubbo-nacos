@@ -1,7 +1,6 @@
 package com.youzi.modules.base.controller;
 
-import cn.hutool.core.util.StrUtil;
-import com.youzi.common.constant.ApiConstant;
+import com.alibaba.nacos.api.config.annotation.NacosValue;
 import com.youzi.common.controller.BaseController;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -13,12 +12,12 @@ import org.springframework.web.bind.annotation.ModelAttribute;
  */
 public abstract class BaseSysPageController extends BaseController {
 
+    @NacosValue("${api.path}")
+    private String apiPath;
+
     @ModelAttribute
     public void setCommonModel(Model model) {
-        if(StrUtil.equals(env, "dev")) {
-            model.addAttribute("apiPath", ApiConstant.API_DEV_PATH);
-        }
+        model.addAttribute("apiPath", apiPath);
     }
-
 
 }

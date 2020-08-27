@@ -163,10 +163,11 @@
         $('.login-out').on("click", function () {
             var loadFlag;
             $.ajax({
-                type: "post",
+                type: 'post',
                 url: '[[${apiPath}]]sysLogin/loginoff',
                 dataType: 'json',
                 xhrFields: {withCredentials: true},
+                headers: {'token': $.cookie('token')},
                 crossDomain: true,
                 beforeSend: function() {
                     loadFlag = layer.load(0, {shade: [0.1,'#fff']});

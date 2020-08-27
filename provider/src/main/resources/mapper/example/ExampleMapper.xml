@@ -2,6 +2,19 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.youzi.modules.example.mapper.ExampleMapper">
 
+  <resultMap id="exampleMap" type="com.youzi.modules.example.entity.Example">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="title" jdbcType="VARCHAR" property="title" />
+    <result column="type" jdbcType="INTEGER" property="type" />
+    <result column="content" jdbcType="VARCHAR" property="content" />
+    <result column="add_time" jdbcType="TIMESTAMP" property="addTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+    <result column="delete_time" jdbcType="TIMESTAMP" property="deleteTime" />
+    <result column="enabled" jdbcType="BIT" property="enabled" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="orderby" jdbcType="INTEGER" property="orderby" />
+  </resultMap>
+
   <insert id="add" parameterType="com.youzi.modules.example.entity.Example">
     insert into example(title, type, content, remark, orderby)
     values(#{title}, #{type}, #{content}, #{remark}, #{orderby})
@@ -30,28 +43,28 @@
       <if test="orderby != null">
         orderby = #{orderby},
       </if>
-      updateTime = now()
+      update_time = now()
     </set>
     where id = #{id}
   </update>
 
   <update id="delete" parameterType="com.youzi.common.query.DeleteQuery">
     update example
-    set enabled = 0, deleteTime = now()
+    set enabled = 0, delete_time = now()
     where id in
     <foreach item="item" collection="ids.split(',')" open="(" separator="," close=")">
       #{item}
     </foreach>
   </update>
 
-  <select id="selectById" parameterType="integer" resultType="com.youzi.modules.example.vo.ExampleVo">
-    select id, title, type, content, addTime, updateTime, remark
+  <select id="selectById" parameterType="integer" resultMap="exampleMap">
+    select id, title, type, content, add_time, update_time, remark
     from example
     where enabled = 1 and id = #{id}
   </select>
 
-  <select id="selectPage" parameterType="com.youzi.modules.example.query.ExampleQuery" resultType="com.youzi.modules.example.vo.ExampleVo">
-    select id, title, type, content, addTime, updateTime, remark
+  <select id="selectPage" parameterType="com.youzi.modules.example.query.ExampleQuery" resultMap="exampleMap">
+    select id, title, type, content, add_time, update_time, remark
     from example
     where enabled = 1
     <if test="title != null and title != ''">
